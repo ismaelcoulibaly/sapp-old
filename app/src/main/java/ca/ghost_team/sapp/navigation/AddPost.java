@@ -187,30 +187,33 @@ public class AddPost extends Fragment implements AdapterView.OnItemSelectedListe
                     .load(temp)
                     .placeholder(R.drawable.collection)
                     .into(binder.addPostCapture);
-        }
-
-
-        if(resultCode == Activity.RESULT_OK && requestCode == 100 && data !=null){
-
-            Uri uri = data.getData();
 
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
-                
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), temp);
+
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                
-                bitmap.compress(Bitmap.CompressFormat.JPEG,100, stream);
+
+                bitmap.compress(Bitmap.CompressFormat.JPEG,10, stream);
 
                 byte[] bytes =stream.toByteArray();
-                
+
                 stringImage = Base64.getEncoder().encodeToString(bytes);
 
-                System.out.println("\n\n\n valeur stringImage : " + stringImage);
+                Log.i(TAG, " valeur stringImage : " + stringImage);
+
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
+
+
+
+
+
+
+
         System.out.println("VALEUR TEMP onActivityResult : " + temp);
     }
 
@@ -224,7 +227,7 @@ public class AddPost extends Fragment implements AdapterView.OnItemSelectedListe
                 TextUtils.isEmpty(description.getText().toString().trim()) ||
                 TextUtils.isEmpty(prix.getText().toString().trim()) ||
                 TextUtils.isEmpty(codePostal.getText().toString().trim()) ||
-                idCategorie == 0) {
+                idCategorie == 0 || stringImage.isEmpty()) {
 
             if (TextUtils.isEmpty(titre.getText().toString().trim())) {
                 titre.setError("Titre required");
@@ -251,7 +254,7 @@ public class AddPost extends Fragment implements AdapterView.OnItemSelectedListe
 
 
         SappAPI.getApi().create(AnnonceAPI.class).createAnnonceViaGetAPI(
-                String.valueOf(temp),
+                "ABC",
                 titre.getText().toString(),
                 description.getText().toString(),
                 Integer.parseInt(prix.getText().toString()),

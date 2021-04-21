@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -84,7 +85,10 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
         Annonce uneAnnonce = listeAnnonces.get(position);
 
         if(!uneAnnonce.getAnnonceImage().equals("null"))
-            holder.imageAnnonce.setImageURI(Uri.parse(uneAnnonce.getAnnonceImage()));
+            //holder.imageAnnonce.setImageURI(Uri.parse(uneAnnonce.getAnnonceImage()));
+            byte[] bytes = Base64.getDecoder().decode(uneAnnonce.getAnnonceImage());
+           holder.imageAnnonce.setImageBitmap(uneAnnonce.getAnnonceImage());
+
         else
             holder.imageAnnonce.setImageResource(R.drawable.collection);
 

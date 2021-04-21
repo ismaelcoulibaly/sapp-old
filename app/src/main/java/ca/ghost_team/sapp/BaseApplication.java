@@ -37,26 +37,8 @@ public class BaseApplication extends MultiDexApplication {
         annonceFavorisRepo = new AnnonceFavorisRepo(this);
         utilisateurRepo = new UtilisateurRepo(this);
 
-//        FirebaseOptions options = new FirebaseOptions.Builder()
-//                .setApplicationId("ca.ghost_team.sapp") // Required for Analytics.
-//                .setProjectId("sapp-3aaa2") // Required for Firebase Installations.
-//                .setApiKey("72:5D:A3:C4:46:C6:26:64:E8:10:99:14:B2:7F:52:A4:0A:3D:54:A8") // Required for Auth.
-//                .build();
-//        FirebaseApp.initializeApp(this, options, "SAPP");
 
         // Firebase Subscribe
-        Log.i("XXXX", "subscription init !");
-        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
-        FirebaseMessaging.getInstance()
-                .subscribeToTopic("mychatroom")
-                .addOnCompleteListener(task -> {
-                            if(task.isSuccessful()){
-                                Log.i("XXXXX", "ok !");
-                            }else {
-                                Log.i("XXXXX", "ko !");
-                            }
-                        }
-                );
     }
 
 }
