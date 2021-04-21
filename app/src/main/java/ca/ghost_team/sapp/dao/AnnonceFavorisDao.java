@@ -28,4 +28,13 @@ public interface AnnonceFavorisDao {
 
     @Query("SELECT COUNT(*) FROM AnnonceFavoris WHERE utilisateurId = :idUser")
     int getAnnonceFavorisCount(int idUser);
+
+    @Query("SELECT COUNT(*) FROM AnnonceFavoris WHERE annonceId = :idAnnonce AND utilisateurId = :idUser")
+    int getAnnonceFavorisIfExist(int idAnnonce, int idUser);
+
+    @Query("DELETE FROM AnnonceFavoris WHERE utilisateurId = :idUser AND annonceId = :idAnnonce")
+    void deleteAnnonceByID(int idUser, int idAnnonce);
+
+    @Query("INSERT INTO annonceFavoris(utilisateurId, annonceId) VALUES(:idUser, :idAnnonce)")
+    void insertLiked(int idUser, int idAnnonce);
 }

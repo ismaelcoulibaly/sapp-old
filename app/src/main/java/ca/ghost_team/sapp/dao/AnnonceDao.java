@@ -46,12 +46,6 @@ public interface AnnonceDao {
     @Query("DELETE FROM annonceTable")
     void deleteAllAnnonce();
 
-    @Query("DELETE FROM annoncefavoris WHERE utilisateurId = :idUser AND annonceId = :idAnnonce")
-    void deleteAnnonceByID(int idUser, int idAnnonce);
-
-    @Query("INSERT INTO annonceFavoris(utilisateurId, annonceId) VALUES(:idUser, :idAnnonce)")
-    void insertLiked(int idUser, int idAnnonce);
-
     @Query("SELECT 1")
     int start();
 

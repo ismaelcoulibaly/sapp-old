@@ -41,7 +41,6 @@ public class FavorisAdapter extends RecyclerView.Adapter<FavorisAdapter.FavorisV
     private SappDatabase db;
 
 
-
     public FavorisAdapter(Context context) {
         this.context = context;
         this.listeAnnoncesFavoris = new ArrayList<>();
@@ -108,30 +107,23 @@ public class FavorisAdapter extends RecyclerView.Adapter<FavorisAdapter.FavorisV
             prix = itemView.findViewById(R.id.favoris_price);
             description = itemView.findViewById(R.id.favoris_description);
             cardViewFavoris = itemView.findViewById(R.id.cardViewFavoris);
-
             cardViewFavoris.setOnCreateContextMenuListener(this);
-
         }
-
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
 
             menu.setHeaderTitle("Selectionner une action");
             menu.add(this.getAdapterPosition(), R.id.favorite_delete, 0, "Supprimer l'annonce des favoris");//groupId, itemId, order, title
-
         }
-
-
     }
 
     public void removeFromFavorites(int position){
-
         Annonce uneAnnonce = listeAnnoncesFavoris.get(position);
         listeAnnoncesFavoris.remove(position);
 
         // Supprimer l'enregitrement dans la Table des Annonces Favoris
-        db.annonceDao().deleteAnnonceByID(ID_USER_CURRENT, uneAnnonce.getIdAnnonce());
+        db.annonceFavorisDao().deleteAnnonceByID(ID_USER_CURRENT, uneAnnonce.getIdAnnonce());
         notifyDataSetChanged();
     }
 
