@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity{
             navBar.setCount(4, String.valueOf(messagesRecus.size()));
         });
 
-        navBar.show(1,true);
+        navBar.show(3,true);
 
         // pour éviter les erreurs
         navBar.setOnClickMenuListener(item -> {});

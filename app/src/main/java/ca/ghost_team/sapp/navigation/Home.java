@@ -29,6 +29,7 @@ import ca.ghost_team.sapp.adapter.AnnonceAdapter;
 import ca.ghost_team.sapp.databinding.LayoutHomeBinding;
 import ca.ghost_team.sapp.model.Annonce;
 import ca.ghost_team.sapp.repository.AnnonceRepo;
+import ca.ghost_team.sapp.service.API.AnnonceAPI;
 import ca.ghost_team.sapp.service.SappAPI;
 import ca.ghost_team.sapp.viewmodel.AnnonceViewModel;
 import retrofit2.Call;
@@ -41,7 +42,6 @@ public class Home extends Fragment {
     private final String TAG = Home.class.getSimpleName();
     private AnnonceViewModel annonceViewModel;
     private RecyclerView recyclerViewAnnonce;
-
     private RelativeLayout filterAll;
     private ImageButton filterPant;
     private ImageButton filterTshirt;
@@ -113,10 +113,9 @@ public class Home extends Fragment {
         recyclerViewAnnonce.setAdapter(adapter);
 
         // Recuperation de toutes les annonces
-        SappAPI api = new SappAPI();
-
-        Call<List<Annonce>> callApi = api.getApi().getAllAnnonceViaAPI();
-        callApi.enqueue(new Callback<List<Annonce>>() {
+        SappAPI.getApi().create(AnnonceAPI.class)
+                .getAllAnnonceViaAPI()
+                .enqueue(new Callback<List<Annonce>>() {
             @Override
             public void onResponse(Call<List<Annonce>> call, Response<List<Annonce>> response) {
                 // Si conncetion Failed
@@ -126,7 +125,6 @@ public class Home extends Fragment {
                 }
                 List<Annonce> newAnnonce = response.body();
                 Log.i(TAG, "newAnnonce : " + newAnnonce);
-
                 // inserer l'annonce dans la base de données locale via le Repository
                 for (Annonce annonce : newAnnonce) {
                     new AnnonceRepo(activity.getApplication()).insertAnnonce(annonce);
@@ -151,15 +149,12 @@ public class Home extends Fragment {
      */
     public void filterList(int categorie) {
         List<Annonce> annonceFilteredList = new ArrayList<>();
-
         annonceViewModel.getAllAnnonces().observe(getViewLifecycleOwner(), annonces -> {
-
             for (Annonce annonce : annonces) {
                 if (annonce.getCategorieId() == categorie) {
                     annonceFilteredList.add(annonce);
                 }
             }
-
             adapter.addAnnonce(annonceFilteredList);
             recyclerViewAnnonce.setAdapter(adapter);
             Log.i(TAG, "Method Filter Generic finished");
@@ -213,7 +208,6 @@ public class Home extends Fragment {
         recyclerViewAnnonce.setAdapter(adapter);
     }
 
-
     /**
      * Methode qui permet de réinitilaiser les couleurs de Background de les ImageButton lorsqu'on clique sur un filtre en particulier
      *
@@ -230,26 +224,3 @@ public class Home extends Fragment {
         filterCap.setBackground(ContextCompat.getDrawable(getContext(), R.drawable.bg_white_rounded_dark));
     }
 }
-
-//new Callback<Annonce>() {
-//@Override
-//public void onResponse(Call<Annonce> call, Response<Annonce> response) {
-//        // Si conncetion Failed
-//        if (!response.isSuccessful()) {
-//        Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
-//        return;
-//        }
-//        Annonce newAnnonce =  response.body();
-//        Log.i(TAG, "newAnnonce : " + newAnnonce);
-//
-//        // inserer l'annonce dans la base de données locale via le Repository
-////                for (Annonce annonce : newAnnonce) {
-////                    new AnnonceRepo(activity.getApplication()).insertAnnonce(annonce);
-////                }
-//        }
-//@Override
-//public void onFailure(Call<Annonce> call, Throwable t) {
-//        // Si erreur 404
-//        Log.e(TAG, t.getMessage());
-//        }
-//        }

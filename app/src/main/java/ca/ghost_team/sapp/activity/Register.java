@@ -21,6 +21,7 @@ import ca.ghost_team.sapp.service.SappAPI;
 import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.databinding.ActivityRegisterBinding;
 import ca.ghost_team.sapp.model.Utilisateur;
+import ca.ghost_team.sapp.service.API.UtilisateurAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,8 +92,7 @@ public class Register extends AppCompatActivity {
                 register_name.requestFocus();
             } else {
 
-                SappAPI api = new SappAPI();
-                api.getApi().createUtilisateurViaAPI(
+                SappAPI.getApi().create(UtilisateurAPI.class).createUtilisateurViaAPI(
                         register_name.getText().toString().trim(),
                         register_username.getText().toString().trim(),
                         register_password.getText().toString().trim(),

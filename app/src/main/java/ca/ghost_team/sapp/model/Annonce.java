@@ -19,10 +19,10 @@ import static ca.ghost_team.sapp.Utils.Conversion.toTimeStr;
 
 @Entity(tableName = "annonceTable",
         foreignKeys = {
-                @ForeignKey(entity = Utilisateur.class,
-                        parentColumns = "idUtilisateur",
-                        childColumns = "utilisateurId",
-                        onDelete = CASCADE),
+//                @ForeignKey(entity = Utilisateur.class,
+//                        parentColumns = "idUtilisateur",
+//                        childColumns = "utilisateurId",
+//                        onDelete = CASCADE),
 
                 @ForeignKey(entity = CategorieAnnonce.class,
                         parentColumns = "idCategorie",
