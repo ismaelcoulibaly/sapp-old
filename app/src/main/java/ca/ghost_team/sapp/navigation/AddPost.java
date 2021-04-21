@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -29,7 +30,10 @@ import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -46,7 +50,6 @@ import ca.ghost_team.sapp.service.SappAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.internal.EverythingIsNonNull;
 
 import static ca.ghost_team.sapp.Utils.Conversion.toTimeStr;
 
@@ -68,6 +71,7 @@ public class AddPost extends Fragment implements AdapterView.OnItemSelectedListe
     private int idCategorie;
     private SappDatabase db;
     private final String TAG = AddPost.class.getSimpleName();
+    String stringImage;
 
     @Nullable
     @Override
@@ -183,6 +187,29 @@ public class AddPost extends Fragment implements AdapterView.OnItemSelectedListe
                     .load(temp)
                     .placeholder(R.drawable.collection)
                     .into(binder.addPostCapture);
+        }
+
+
+        if(resultCode == Activity.RESULT_OK && requestCode == 100 && data !=null){
+
+            Uri uri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                
+                bitmap.compress(Bitmap.CompressFormat.JPEG,100, stream);
+
+                byte[] bytes =stream.toByteArray();
+                
+                stringImage = Base64.getEncoder().encodeToString(bytes);
+
+                System.out.println("\n\n\n valeur stringImage : " + stringImage);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         System.out.println("VALEUR TEMP onActivityResult : " + temp);
     }
