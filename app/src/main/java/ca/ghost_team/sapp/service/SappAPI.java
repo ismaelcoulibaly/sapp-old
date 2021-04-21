@@ -8,17 +8,17 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SappAPI {
-    private SappDatabaseAPI api = null;
+    public static Retrofit api = null;
 
-    public SappDatabaseAPI getApi(){
+    public static Retrofit getApi(){
         if(api == null){
             Gson gson = new GsonBuilder().create();
 
-            this.api =  new Retrofit.Builder()
+            api =  new Retrofit.Builder()
                     .baseUrl("http://192.168.2.183/sappserver/")
                     .addConverterFactory(GsonConverterFactory.create(gson))
-                    .build()
-                    .create(SappDatabaseAPI.class);
+                    .build();
+                    //.create(UtilisateurAPI.class);
         }
 
         return api;

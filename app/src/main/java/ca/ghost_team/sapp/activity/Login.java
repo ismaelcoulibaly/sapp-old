@@ -25,6 +25,7 @@ import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.databinding.ActivityLoginBinding;
 import ca.ghost_team.sapp.model.Utilisateur;
 import ca.ghost_team.sapp.repository.UtilisateurRepo;
+import ca.ghost_team.sapp.service.API.UtilisateurAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,8 +92,7 @@ public class Login extends AppCompatActivity {
             } else {
 
                 // RETROFIT
-                SappAPI api = new SappAPI();
-                api.getApi().getUtilisateurViaAPI(
+                SappAPI.getApi().create(UtilisateurAPI.class).getUtilisateurViaAPI(
                         username.getText().toString(),
                         password.getText().toString()
                 ).enqueue(new Callback<Utilisateur>() {
@@ -138,7 +138,6 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<Utilisateur> call, Throwable t) {
                         // Si erreur 404
-                        Log.i(TAG, t.getMessage());
                         Log.e(TAG, t.getMessage());
                     }
                 });
