@@ -3,7 +3,10 @@ package ca.ghost_team.sapp.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +23,6 @@ import com.bumptech.glide.Glide;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -84,13 +86,24 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
         this.listeAnnonceFavorite = db.annonceFavorisDao().findListAnnonceFavoriteByUser(ID_USER_CURRENT);
         Annonce uneAnnonce = listeAnnonces.get(position);
 
-        if(!uneAnnonce.getAnnonceImage().equals("null"))
-            //holder.imageAnnonce.setImageURI(Uri.parse(uneAnnonce.getAnnonceImage()));
-            byte[] bytes = Base64.getDecoder().decode(uneAnnonce.getAnnonceImage());
-           holder.imageAnnonce.setImageBitmap(uneAnnonce.getAnnonceImage());
 
-        else
-            holder.imageAnnonce.setImageResource(R.drawable.collection);
+        if(!uneAnnonce.getAnnonceImage().equals("null")){
+
+            holder.imageAnnonce.setImageURI(Uri.parse(uneAnnonce.getAnnonceImage()));
+            /********************************************************************************/
+            //  si nombre de text d'image sup a 1000 on decode
+            if(uneAnnonce.getAnnonceImage().length()>1000){
+                byte[] bytes;
+                bytes = Base64.decode(uneAnnonce.getAnnonceImage(),Base64.DEFAULT);
+                Bitmap imageBitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                holder.imageAnnonce.setImageBitmap(imageBitmap);
+
+            }
+
+        }
+
+        else{
+            holder.imageAnnonce.setImageResource(R.drawable.collection);}
 
         // holder.imageAnnonce.setImageURI(Uri.parse(uneAnnonce.getAnnonceImage()));
         holder.titre.setText(uneAnnonce.getAnnonceTitre());

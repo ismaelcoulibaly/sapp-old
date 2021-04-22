@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +34,6 @@ import com.bumptech.glide.Glide;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -187,17 +187,17 @@ public class AddPost extends Fragment implements AdapterView.OnItemSelectedListe
                     .load(temp)
                     .placeholder(R.drawable.collection)
                     .into(binder.addPostCapture);
-
+      // conversion path to bitmap to string and set stringimage
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), temp);
 
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
-                bitmap.compress(Bitmap.CompressFormat.JPEG,10, stream);
+                bitmap.compress(Bitmap.CompressFormat.PNG,00, stream);
 
                 byte[] bytes =stream.toByteArray();
 
-                stringImage = Base64.getEncoder().encodeToString(bytes);
+                stringImage = Base64.encodeToString(bytes,Base64.DEFAULT);
 
                 Log.i(TAG, " valeur stringImage : " + stringImage);
 
@@ -247,14 +247,23 @@ public class AddPost extends Fragment implements AdapterView.OnItemSelectedListe
             }
             return;
         }
+        //Ajouter localement via room
+        new AnnonceRepo(activity.getApplication()).insertAnnonce(new Annonce( stringImage,
+                titre.getText().toString(),
+                description.getText().toString(),
+                Integer.parseInt(prix.getText().toString()),
+                String.valueOf(new Date()),
+                codePostal.getText().toString().trim(),
+                BaseApplication.ID_USER_CURRENT,
+                idCategorie));
 
         Log.i(TAG,"valeur de String.valueOf(new Date() : " + String.valueOf(new Date()));
         Log.i(TAG,"valeur de toTimeStr(new Date() : " + toTimeStr(new Date()));
         Log.i(TAG,"valeur de new Date() : " + new Date());
 
-
+// trop lourd pour http
         SappAPI.getApi().create(AnnonceAPI.class).createAnnonceViaGetAPI(
-                "ABC",
+                stringImage,
                 titre.getText().toString(),
                 description.getText().toString(),
                 Integer.parseInt(prix.getText().toString()),
