@@ -88,34 +88,6 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull AnnonceVH holder, int position) {
-        SappAPI.getApi().create(AnnonceFavorisAPI.class).getAllAnnonceFavorisViaAPI(ID_USER_CURRENT)
-                .enqueue(new Callback<List<AnnonceFavoris>>() {
-                    @Override
-                    public void onResponse(Call<List<AnnonceFavoris>> call, Response<List<AnnonceFavoris>> response) {
-                        // Si conncetion Failed
-                        if (!response.isSuccessful()) {
-                            Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
-                            return;
-                        }
-
-                        Log.i(TAG, "response : " + response);
-                        List<AnnonceFavoris> annonceFavorisList = response.body();
-
-                        for (AnnonceFavoris annonce : annonceFavorisList) {
-                            int c = db.annonceFavorisDao().getAnnonceFavorisIfExist(annonce.getAnnonceId(), ID_USER_CURRENT);
-                            if (c == 0) {
-                                new AnnonceFavorisRepo(activity.getApplication()).insertLiked(annonce);
-                                holder.likeBtn.setImageResource(R.drawable.ic_favoris_red);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<AnnonceFavoris>> call, Throwable t) {
-                        // Si erreur 404
-                        Log.e(TAG, t.getMessage());
-                    }
-                });
 
         this.listeAnnonceFavorite = db.annonceFavorisDao().findListAnnonceFavoriteByUser(ID_USER_CURRENT);
         Annonce uneAnnonce = listeAnnonces.get(position);
@@ -128,7 +100,7 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
         // holder.imageAnnonce.setImageURI(Uri.parse(uneAnnonce.getAnnonceImage()));
         holder.titre.setText(uneAnnonce.getAnnonceTitre());
         holder.prix.setText("$" + uneAnnonce.getAnnoncePrix());
-        //apelle de la methode de formatage
+        //appelle de la methode de formatage
         holder.date.setText("" + uneAnnonce.getAnnonceDate());
 
         // Donner les états initials du Boutton
@@ -138,6 +110,36 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
             holder.likeBtn.setImageResource(R.drawable.ic_favoris_red);
 
         holder.likeBtn.setOnClickListener(v -> {
+
+//            SappAPI.getApi().create(AnnonceFavorisAPI.class).getAllAnnonceFavorisViaAPI(ID_USER_CURRENT)
+//                    .enqueue(new Callback<List<AnnonceFavoris>>() {
+//                        @Override
+//                        public void onResponse(Call<List<AnnonceFavoris>> call, Response<List<AnnonceFavoris>> response) {
+//                            // Si conncetion Failed
+//                            if (!response.isSuccessful()) {
+//                                Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
+//                                return;
+//                            }
+//
+//                            Log.i(TAG, "response : " + response);
+//                            List<AnnonceFavoris> annonceFavorisList = response.body();
+//
+//                            for (AnnonceFavoris annonce : annonceFavorisList) {
+//                                int c = db.annonceFavorisDao().getAnnonceFavorisIfExist(annonce.getAnnonceId(), ID_USER_CURRENT);
+//                                if (c > 0) {
+//                                    new AnnonceFavorisRepo(activity.getApplication()).insertLiked(annonce);
+//                                    holder.likeBtn.setImageResource(R.drawable.ic_favoris_red);
+//                                }
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onFailure(Call<List<AnnonceFavoris>> call, Throwable t) {
+//                            // Si erreur 404
+//                            Log.e(TAG, t.getMessage());
+//                        }
+//                    });
+
             if (uneAnnonce.getUtilisateurId() == ID_USER_CURRENT) {
                 Toast.makeText(context, "Tu ne peux pas aimer ton annonce !", Toast.LENGTH_LONG).show();
                 return;
