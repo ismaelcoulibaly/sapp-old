@@ -15,7 +15,7 @@ public class SappAPI {
             Gson gson = new GsonBuilder().create();
 
             api =  new Retrofit.Builder()
-                    .baseUrl("http://192.168.2.183/sappserver/")
+                    .baseUrl("http://192.168.1.61/sappserver/")
                     .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
                     //.create(UtilisateurAPI.class);
