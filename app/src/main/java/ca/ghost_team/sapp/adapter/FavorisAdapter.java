@@ -46,6 +46,7 @@ public class FavorisAdapter extends RecyclerView.Adapter<FavorisAdapter.FavorisV
         this.listeAnnoncesFavoris = new ArrayList<>();
         this.db = Room.databaseBuilder(context, SappDatabase.class, BaseApplication.NAME_DB)
                 .allowMainThreadQueries().build();
+
     }
 
     @NonNull

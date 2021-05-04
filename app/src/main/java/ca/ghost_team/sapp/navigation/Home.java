@@ -1,5 +1,6 @@
 package ca.ghost_team.sapp.navigation;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -130,7 +131,7 @@ public class Home extends Fragment {
         recyclerViewAnnonce.setAdapter(adapter);
 
 
-        // Recuperation de toutes les annonces
+         //Recuperation de toutes les annonces
 //        SappAPI.getApi().create(AnnonceAPI.class)
 //                .getAllAnnonceViaAPI()
 //                .enqueue(new Callback<List<Annonce>>() {
@@ -157,7 +158,7 @@ public class Home extends Fragment {
 //                        Log.e(TAG, t.getMessage());
 //                    }
 //                });
-//
+
 //        SappAPI.getApi().create(AnnonceFavorisAPI.class).getAllAnnonceFavorisViaAPI(ID_USER_CURRENT)
 //                .enqueue(new Callback<List<AnnonceFavoris>>() {
 //                    @Override
@@ -171,13 +172,21 @@ public class Home extends Fragment {
 //                        Log.i(TAG, "response : " + response);
 //                        List<AnnonceFavoris> annonceFavorisList = response.body();
 //
-//                        for (AnnonceFavoris annonce: annonceFavorisList) {
+//                        AnnonceFavoris [] annonceFavorisTab = new AnnonceFavoris [annonceFavorisList.size()];
+//                        annonceFavorisList.toArray(annonceFavorisTab);
+//                        Log.i(TAG, "onResponse:hh "+annonceFavorisTab.length);
+//                        System.out.println("\n\n\n"+annonceFavorisTab.length);
+//
+//                        // new AnnonceFavorisRepo(activity.getApplication()).insertLiked(annonceFavorisTab);
+//
+//                    for (AnnonceFavoris annonce: annonceFavorisList) {
 //                            // Ajouter (ou insérer l'enregistrement dans la Table des Annonces Favories)
 //                            //insertIntoDatabaseWeb(annonce.getAnnonceId());
-//                            int c = db.annonceFavorisDao().getAnnonceFavorisIfExist(annonce.getAnnonceId(), ID_USER_CURRENT);
-//                            if(c != 0)
+////                            int c = db.annonceFavorisDao().getAnnonceFavorisIfExist(annonce.getAnnonceId(), ID_USER_CURRENT);
+////                            if(c != 0)
 //                                new AnnonceFavorisRepo(activity.getApplication()).insertLiked(annonce);
-//                        }
+//                                System.out.println("insertion reussit \n"+annonce.getAnnonceId());
+//                    }
 //                    }
 //
 //                    @Override
@@ -188,7 +197,7 @@ public class Home extends Fragment {
 //                });
 
 
-    }
+   }
 
     /**
      * Methode FilterList

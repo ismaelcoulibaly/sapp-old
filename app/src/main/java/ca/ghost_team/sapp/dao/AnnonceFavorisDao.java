@@ -2,6 +2,8 @@ package ca.ghost_team.sapp.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -34,6 +36,7 @@ public interface AnnonceFavorisDao {
 
     @Query("DELETE FROM AnnonceFavoris WHERE utilisateurId = :idUser AND annonceId = :idAnnonce")
     void deleteAnnonceByID(int idUser, int idAnnonce);
+
 
     @Query("INSERT INTO annonceFavoris(utilisateurId, annonceId) VALUES(:idUser, :idAnnonce)")
     void insertLiked(int idUser, int idAnnonce);

@@ -4,6 +4,8 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 
 import java.util.List;
 
@@ -47,6 +49,7 @@ public class AnnonceFavorisRepo {
 
         @Override
         protected Void doInBackground(AnnonceFavoris... annonces) {
+
             uneAnnonceDao.insertLiked(ID_USER_CURRENT, annonces[0].getAnnonceId());
             return null;
         }
