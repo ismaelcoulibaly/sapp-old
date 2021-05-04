@@ -3,10 +3,12 @@ package ca.ghost_team.sapp.navigation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.room.Room;
+
+import com.bumptech.glide.Glide;
 
 import ca.ghost_team.sapp.BaseApplication;
 import ca.ghost_team.sapp.MainActivity;
@@ -39,6 +43,7 @@ public class Profil extends Fragment {
     private RelativeLayout displayAnnonceVendueContainer;
     private MainActivity mainActivity;
     private SharedPreferences prefs;
+    private ImageView profilePic;
 
     @Nullable
     @Override
@@ -69,6 +74,7 @@ public class Profil extends Fragment {
         infoEmailUser = binding.infoEmailUser;
         logOutContainer = binding.logoutContainer;
         displayAnnonceVendueContainer = binding.annonceVendueContainer;
+        profilePic = binding.profilePic;
 
         Utilisateur currentUser = db.utilisateurDao().getInfoUtilisateur(ID_USER_CURRENT);
 
@@ -82,7 +88,7 @@ public class Profil extends Fragment {
             infoNameUser.setText(currentUser.getUtilisateurNom());
             infoUsername.setText(currentUser.getUtilisateurUsername());
             infoEmailUser.setText(currentUser.getUtilisateurEmail());
-        }
+            profilePic.setImageURI(Uri.parse(String.valueOf(profilePic)));        }
 
         //Log Out
         logOutContainer.setOnClickListener(this::logOut);
@@ -95,6 +101,17 @@ public class Profil extends Fragment {
     private void displayAnnonceVendue(View view) {
         Intent intentAnnonceVendue = new Intent(getContext(), AnnonceVendue.class);
         startActivity(intentAnnonceVendue);
+    }
+    private void loadImage(View view){
+
+        String url = " https://picsum.photos/600";
+        Glide.with(this)
+                .load(url)
+                .centerCrop()
+                .placeholder(R.drawable.ic_launcher_foreground)
+                .into(profilePic);
+
+
     }
 
     private void logOut(View view) {

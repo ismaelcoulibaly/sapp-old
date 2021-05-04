@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -20,12 +22,25 @@
                 android:textColor="@color/yellow"
                 android:textSize="22sp"
                 android:textStyle="bold" />
+            <LinearLayout
+                android:id="@+id/champsPhoto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/informations">
+
+                <ImageView
+                    android:id="@+id/profile_pic"
+                    android:layout_width="96dp"
+                    android:layout_height="71dp"
+                    android:background="@drawable/bg_white_rounded_medium"
+                    tools:srcCompat="@tools:sample/avatars[4]" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/ChampsNomUser"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/informations"
+                android:layout_below="@id/champsPhoto"
                 android:layout_marginTop="15sp"
                 android:orientation="horizontal">
 
@@ -109,6 +124,8 @@
                     android:textColor="@color/white"
                     android:textSize="18sp" />
             </LinearLayout>
+
+
 
         </RelativeLayout>
 
