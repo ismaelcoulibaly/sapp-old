@@ -30,10 +30,10 @@
 
                 <ImageView
                     android:id="@+id/profile_pic"
-                    android:layout_width="96dp"
-                    android:layout_height="71dp"
                     android:background="@drawable/bg_white_rounded_medium"
-                    tools:srcCompat="@tools:sample/avatars[4]" />
+                    android:src="@drawable/ic_profil"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"/>
             </LinearLayout>
 
             <LinearLayout
