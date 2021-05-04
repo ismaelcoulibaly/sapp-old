@@ -42,6 +42,10 @@ public class MessageRepo {
         new SendMessageAsyncTask(dao).execute(message);
     }
 
+    public void putReadMessage(Message... message){
+        new MessageReadAsyncTask(dao).execute(message);
+    }
+
     private static class SendMessageAsyncTask extends AsyncTask<Message, Void, Void> {
 
         private final MessageDao unMessageDao;
@@ -53,6 +57,23 @@ public class MessageRepo {
         @Override
         protected Void doInBackground(Message... message) {
             unMessageDao.sendMessage(message);
+            return null;
+        }
+
+    }
+
+    private static class MessageReadAsyncTask extends AsyncTask<Message, Void, Void> {
+
+        private final MessageDao unMessageDao;
+
+        private MessageReadAsyncTask(MessageDao dao) {
+            this.unMessageDao = dao;
+        }
+
+        @Override
+        protected Void doInBackground(Message... message) {
+            message[0].setRead(true);
+            unMessageDao.putRead(message);
             return null;
         }
 

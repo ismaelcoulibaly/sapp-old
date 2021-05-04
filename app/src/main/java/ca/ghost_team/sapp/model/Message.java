@@ -21,9 +21,11 @@ import static androidx.room.ForeignKey.CASCADE;
                         onDelete = CASCADE)
         })
 public class Message {
+
     @PrimaryKey(autoGenerate = true)
     private int idMessage;
 
+    private boolean isRead;
     private String message;
     private int idSender;
     private int idReceiver;
@@ -36,6 +38,15 @@ public class Message {
         this.idReceiver = idReceiver;
         this.annonceId = annonceId;
         this.creationDate = creationDate;
+        this.isRead = false;
+    }
+
+    public boolean isRead() {
+        return isRead;
+    }
+
+    public void setRead(boolean read) {
+        isRead = read;
     }
 
     public int getIdMessage() {
