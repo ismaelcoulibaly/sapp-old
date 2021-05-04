@@ -125,8 +125,7 @@ public class FavorisAdapter extends RecyclerView.Adapter<FavorisAdapter.FavorisV
         listeAnnoncesFavoris.remove(position);
 
         // Supprimer l'enregitrement dans la Table des Annonces Favoris
-        AnnonceFavoris annonceToDelete = new AnnonceFavoris(ID_USER_CURRENT,uneAnnonce.getIdAnnonce());
-        db.annonceFavorisDao().deleteAnnonceByID(annonceToDelete);
+        db.annonceFavorisDao().deleteAnnonceByID(ID_USER_CURRENT,uneAnnonce.getIdAnnonce());
         notifyDataSetChanged();
     }
 

@@ -37,11 +37,10 @@ public interface AnnonceFavorisDao {
     int getAnnonceFavorisIfExist(int idAnnonce, int idUser);
 
 
-    //@Query("DELETE FROM AnnonceFavoris WHERE utilisateurId = :idUser AND annonceId = :idAnnonce")
-    @Delete
-    void deleteAnnonceByID(AnnonceFavoris... annonceFavorite);
+    @Query("DELETE FROM AnnonceFavoris WHERE utilisateurId = :idUser AND annonceId = :idAnnonce")
+    void deleteAnnonceByID(int idUser, int idAnnonce);
 
-    //@Query("INSERT INTO annonceFavoris(utilisateurId, annonceId) VALUES(:idUser, :idAnnonce)")
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertLiked(AnnonceFavoris... annonceFavorite);
+    @Query("INSERT INTO annonceFavoris(utilisateurId, annonceId) VALUES(:idUser, :idAnnonce)")
+    //@Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertLiked(int idUser, int idAnnonce);
 }

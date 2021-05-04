@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.Date;
 
 import ca.ghost_team.sapp.BaseApplication;
+import ca.ghost_team.sapp.MainActivity;
 import ca.ghost_team.sapp.R;
 import ca.ghost_team.sapp.adapter.ListMessageAdapter;
 import ca.ghost_team.sapp.adapter.MessageAdapter;
@@ -38,6 +39,8 @@ public class MessageActivity extends AppCompatActivity {
     private int idReceiverCurrent;
     private int idAnnonceCurrentVendeur;
     private int idReceiverCurrentVendeur;
+    private int idAnnonceNotify;
+    private int idReceiverNotify;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,11 @@ public class MessageActivity extends AppCompatActivity {
         idAnnonceCurrent = bundle.getInt(DetailAnnonce.ID_ANNONCE_CURRENT);
         idReceiverCurrent = bundle.getInt(DetailAnnonce.ID_RECEIVER_CURRENT);
 
+        /* Venant de MainActivity (Notification)
+         * Si les informations idAnnonce et idReceiver viennent du click de la Notification */
+        idAnnonceNotify = bundle.getInt(MainActivity.ID_ANNONCE_CURRENT_NOTIFICATION);
+        idReceiverNotify = bundle.getInt(MainActivity.ID_RECEIVER_CURRENT_NOTIFICATION);
+
         /* Venant de ListMessageAdapter (Fragment Message)
         /* Si les informations idAnnonce et idReceiver viennent de ListMessageAdapter sur le click de l'Item conversation */
         idAnnonceCurrentVendeur = bundle.getInt(ListMessageAdapter.ID_ANNONCE_CURRENT_LIST_MESSAGE);
@@ -75,6 +83,10 @@ public class MessageActivity extends AppCompatActivity {
         /* Venant de ListMessageAdapter (Fragment Message) */
         if(idReceiverCurrentVendeur != 0)
             sendMessageBetween(idReceiverCurrentVendeur, idAnnonceCurrentVendeur);
+
+        /* Venant de la Notification */
+        else if(idReceiverNotify != 0)
+            sendMessageBetween(idReceiverNotify, idAnnonceNotify);
 
         /* Venant de DetailAnnonce (Button Contacter)*/
         else
@@ -118,22 +130,35 @@ public class MessageActivity extends AppCompatActivity {
         // Instancier le Message à envoyer et Inserer dans la BD
         // TODO implémenter le pattern Builder pour l'entité Message
         if(idReceiverCurrentVendeur != 0){
-////            myMessage = new Message();
-//            myMessage.setIdSender(BaseApplication.ID_USER_CURRENT);
-//            myMessage.setIdReceiver(idReceiverCurrentVendeur);
-//            myMessage.setMessage(editMessage.getText().toString().trim());
-//            myMessage.setAnnonceId(idAnnonceCurrentVendeur);
+            myMessage = new Message(
+                    editMessage.getText().toString().trim(),
+                    BaseApplication.ID_USER_CURRENT,
+                    idReceiverCurrentVendeur,
+                    idAnnonceCurrentVendeur,
+                    new Date()
+            );
         }
-//        else{
-//            myMessage = new Message();
-//            myMessage.setIdSender(BaseApplication.ID_USER_CURRENT);
-//            myMessage.setMessage(editMessage.getText().toString().trim());
-//            myMessage.setIdReceiver(idReceiverCurrent);
-//            myMessage.setAnnonceId(idAnnonceCurrent);
-//        }
-//
-//        new MessageRepo(getApplication()).sendMessage(myMessage);
-//        Log.i(TAG, "[" + myMessage.toString() + "] - ENVOYÉ !");
+        else if(idReceiverNotify != 0){
+            myMessage = new Message(
+                    editMessage.getText().toString().trim(),
+                    BaseApplication.ID_USER_CURRENT,
+                    idReceiverNotify,
+                    idAnnonceNotify,
+                    new Date()
+            );
+        }
+        else{
+           myMessage = new Message(
+                   editMessage.getText().toString().trim(),
+                   BaseApplication.ID_USER_CURRENT,
+                   idReceiverCurrent,
+                   idAnnonceCurrent,
+                   new Date()
+           );
+      }
+
+       new MessageRepo(getApplication()).sendMessage(myMessage);
+        Log.i(TAG, "[" + myMessage.toString() + "] - ENVOYÉ !");
 
         // Réinitialiser le champ d'édition après l'envoi du Message
         editMessage.setText("");

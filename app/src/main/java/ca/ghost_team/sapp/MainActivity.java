@@ -1,9 +1,16 @@
 package ca.ghost_team.sapp;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import ca.ghost_team.sapp.activity.MessageActivity;
 import ca.ghost_team.sapp.databinding.ActivityMainBinding;
 import ca.ghost_team.sapp.model.Annonce;
 import ca.ghost_team.sapp.navigation.AddPost;
@@ -18,6 +26,7 @@ import ca.ghost_team.sapp.navigation.Favoris;
 import ca.ghost_team.sapp.navigation.Home;
 import ca.ghost_team.sapp.navigation.Message;
 import ca.ghost_team.sapp.navigation.Profil;
+import ca.ghost_team.sapp.repository.AnnonceRepo;
 import ca.ghost_team.sapp.viewmodel.AnnonceViewModel;
 import ca.ghost_team.sapp.viewmodel.MessageViewModel;
 
@@ -27,6 +36,8 @@ public class MainActivity extends AppCompatActivity{
     private AnnonceViewModel annonceViewModel;
     private MessageViewModel messageViewModel;
     private ActivityMainBinding binding;
+    public static final String ID_ANNONCE_CURRENT_NOTIFICATION = "ca.ghost_team.sapp.MainActivity.ID_ANNONCE_CURRENT_NOTIFICATION";
+    public static final String ID_RECEIVER_CURRENT_NOTIFICATION = "ca.ghost_team.sapp.MainActivity.ID_RECEIVER_CURRENT_NOTIFICATION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +88,41 @@ public class MainActivity extends AppCompatActivity{
         });
 
         messageViewModel = new ViewModelProvider(this).get(MessageViewModel.class);
+
         messageViewModel.getAllMessagesReceiver().observe(this, messagesRecus -> {
             navBar.setCount(4, String.valueOf(messagesRecus.size()));
+
+            if(messagesRecus.size() > 0){
+                int idAnnonce = messagesRecus.get(messagesRecus.size() - 1).getAnnonceId();
+                String message = messagesRecus.get(messagesRecus.size() - 1).getMessage();
+                int idSender = messagesRecus.get(messagesRecus.size() - 1).getIdSender();
+
+                Annonce annonce = new AnnonceRepo(this.getApplication()).getInfoAnnonce(idAnnonce);
+
+                NotificationCompat.Builder notificationBuilder =
+                        new NotificationCompat
+                                .Builder(this, BaseApplication.CHANNEL_DEFAULT)
+                                .setSmallIcon(R.drawable.ic_message)
+                                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_round))
+                                .setContentTitle(annonce.getAnnonceTitre())
+                                .setContentText(message)
+                                .setStyle(new NotificationCompat.BigTextStyle()
+                                        .bigText(message))
+                                .setAutoCancel(true);
+
+                Intent intent = new Intent(this, MessageActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra(ID_ANNONCE_CURRENT_NOTIFICATION, idAnnonce);
+                intent.putExtra(ID_RECEIVER_CURRENT_NOTIFICATION, idSender);
+
+                PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this,155,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                notificationBuilder.setContentIntent(pendingIntent);
+
+                NotificationManager notificationManager =
+                        (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(idSender, notificationBuilder.build());
+            }
+
         });
 
         navBar.show(3,true);

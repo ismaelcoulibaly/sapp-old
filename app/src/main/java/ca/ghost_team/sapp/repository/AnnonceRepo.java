@@ -17,6 +17,7 @@ public class AnnonceRepo {
     private final AnnonceDao dao;
     private final LiveData<List<Annonce>> allAnnonces;
     private final LiveData<List<Annonce>> allAnnonceVendues;
+    private Annonce infoAnnonce;
 
     public AnnonceRepo(Application app) {
         SappDatabase database = SappDatabase.getInstance(app);
@@ -53,6 +54,11 @@ public class AnnonceRepo {
         new DeleteAnnonceAsyncTask(dao).execute(annonce);
     }
 
+    public Annonce getInfoAnnonce(int idAnnonce){
+        return dao.getInfoAnnonce(idAnnonce);
+    }
+
+    /****************************************************************************************/
     private static class InsertAnnonceAsyncTask extends AsyncTask<Annonce, Void, Void> {
 
         private final AnnonceDao uneAnnonceDao;
@@ -127,6 +133,5 @@ public class AnnonceRepo {
             return null;
         }
     }
-
 
 }

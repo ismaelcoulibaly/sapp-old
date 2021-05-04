@@ -132,7 +132,7 @@ public class Home extends Fragment {
 
 
          //Recuperation de toutes les annonces
-        /*SappAPI.getApi().create(AnnonceAPI.class)
+         /*SappAPI.getApi().create(AnnonceAPI.class)
                 .getAllAnnonceViaAPI()
                 .enqueue(new Callback<List<Annonce>>() {
                     @Override
@@ -157,35 +157,6 @@ public class Home extends Fragment {
                         Log.e(TAG, t.getMessage());
                     }
                 });*/
-
-        /*SappAPI.getApi().create(AnnonceFavorisAPI.class).getAllAnnonceFavorisViaAPI(ID_USER_CURRENT)
-                .enqueue(new Callback<List<AnnonceFavoris>>() {
-                    @Override
-                    public void onResponse(Call<List<AnnonceFavoris>> call, Response<List<AnnonceFavoris>> response) {
-                        // Si conncetion Failed
-                        if (!response.isSuccessful()) {
-                            Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
-                            return;
-                        }
-
-                        Log.i(TAG, "response : " + response);
-                        List<AnnonceFavoris> annonceFavorisList = response.body();
-
-                        assert annonceFavorisList != null;
-                        AnnonceFavoris [] annonceFavorisTab = new AnnonceFavoris [annonceFavorisList.size()];
-                        annonceFavorisList.toArray(annonceFavorisTab);
-                        Log.i(TAG, "onResponse:hh "+annonceFavorisTab.length);
-                        System.out.println("\n\n\n"+annonceFavorisTab.length);
-                        new AnnonceFavorisRepo(activity.getApplication()).insertLiked(annonceFavorisTab);
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<AnnonceFavoris>> call, Throwable t) {
-                        // Si erreur 404
-                        Log.e(TAG, t.getMessage());
-                    }
-                });*/
-
 
    }
 

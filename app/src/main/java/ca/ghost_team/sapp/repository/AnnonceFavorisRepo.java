@@ -46,7 +46,7 @@ public class AnnonceFavorisRepo {
 
         @Override
         protected Void doInBackground(AnnonceFavoris... annonces) {
-            uneAnnonceDao.insertLiked(annonces);
+            uneAnnonceDao.insertLiked(ID_USER_CURRENT,annonces[0].getAnnonceId());
 
             return null;
         }
@@ -62,7 +62,7 @@ public class AnnonceFavorisRepo {
 
         @Override
         protected Void doInBackground(AnnonceFavoris... annonces) {
-            uneAnnonceDao.deleteAnnonceByID(annonces);
+            uneAnnonceDao.deleteAnnonceByID(ID_USER_CURRENT,annonces[0].getAnnonceId());
             return null;
         }
     }
