@@ -2,6 +2,7 @@ package ca.ghost_team.sapp.dao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -9,6 +10,7 @@ import androidx.room.Query;
 import java.util.List;
 
 import ca.ghost_team.sapp.model.Annonce;
+import ca.ghost_team.sapp.model.AnnonceFavoris;
 
 @Dao
 public interface AnnonceFavorisDao {
@@ -34,10 +36,12 @@ public interface AnnonceFavorisDao {
     @Query("SELECT COUNT(*) FROM AnnonceFavoris WHERE annonceId = :idAnnonce AND utilisateurId = :idUser")
     int getAnnonceFavorisIfExist(int idAnnonce, int idUser);
 
-    @Query("DELETE FROM AnnonceFavoris WHERE utilisateurId = :idUser AND annonceId = :idAnnonce")
-    void deleteAnnonceByID(int idUser, int idAnnonce);
 
+    //@Query("DELETE FROM AnnonceFavoris WHERE utilisateurId = :idUser AND annonceId = :idAnnonce")
+    @Delete
+    void deleteAnnonceByID(AnnonceFavoris... annonceFavorite);
 
-    @Query("INSERT INTO annonceFavoris(utilisateurId, annonceId) VALUES(:idUser, :idAnnonce)")
-    void insertLiked(int idUser, int idAnnonce);
+    //@Query("INSERT INTO annonceFavoris(utilisateurId, annonceId) VALUES(:idUser, :idAnnonce)")
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertLiked(AnnonceFavoris... annonceFavorite);
 }

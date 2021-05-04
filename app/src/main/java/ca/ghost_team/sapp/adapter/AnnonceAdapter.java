@@ -110,8 +110,6 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
             holder.likeBtn.setImageResource(R.drawable.ic_favoris_red);
 
         holder.likeBtn.setOnClickListener(v -> {
-            test(holder);
-
 
             if (uneAnnonce.getUtilisateurId() == ID_USER_CURRENT) {
                 Toast.makeText(context, "Tu ne peux pas aimer ton annonce !", Toast.LENGTH_LONG).show();
@@ -129,12 +127,10 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
                                     return;
                                 }
                                 Log.i(TAG, "response : " + response);
-                                AnnonceFavoris annonceFavoris = response.body();
-                                int c = db.annonceFavorisDao().getAnnonceFavorisIfExist(annonceFavoris.getAnnonceId(), ID_USER_CURRENT);
-                                if (c == 0) {
-                                    new AnnonceFavorisRepo(activity.getApplication()).insertLiked(annonceFavoris);
-                                    holder.likeBtn.setImageResource(R.drawable.ic_favoris_red);
-                                }
+                                if(response.body() != null)
+                                    new AnnonceFavorisRepo(activity.getApplication()).insertLiked(response.body());
+
+                                holder.likeBtn.setImageResource(R.drawable.ic_favoris_red);
                             }
 
                             @Override
@@ -143,6 +139,7 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
                                 Log.e(TAG, t.getMessage());
                             }
                         });
+                //test();
             } else {
                 SappAPI.getApi().create(AnnonceFavorisAPI.class).disLikeAnnonceViaAPI(uneAnnonce.getIdAnnonce(), ID_USER_CURRENT)
                         .enqueue(new Callback<AnnonceFavoris>() {
@@ -153,14 +150,11 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
                                     Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
                                     return;
                                 }
-                                Log.i(TAG, "response : " + response);
-                                AnnonceFavoris annonceFavoris = response.body();
-                                System.out.println(annonceFavoris.annonceId+"\n"+annonceFavoris.utilisateurId);
-                              //  int c = db.annonceFavorisDao().getAnnonceFavorisIfExist(annonceFavoris.getAnnonceId(), ID_USER_CURRENT);
-//                                if (c > 0) {
-                                    new AnnonceFavorisRepo(activity.getApplication()).disLikeAnnonce(annonceFavoris);
-                                    holder.likeBtn.setImageResource(R.drawable.ic_favoris);
-//                                }      test(holder);
+                                Log.i(TAG, "Annonce à Disliker : " + response.body());
+                                if(response.body() != null)
+                                    new AnnonceFavorisRepo(activity.getApplication()).disLikeAnnonce(response.body());
+
+                                holder.likeBtn.setImageResource(R.drawable.ic_favoris);
                             }
 
                             @Override
@@ -170,7 +164,7 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
                             }
                         });
             }
-            notifyDataSetChanged();
+            //notifyDataSetChanged();
         });
 
         // set OnClickListener
@@ -185,8 +179,11 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
             intent.putExtra(ANNONCE_ZIP_REQUEST, uneAnnonce.getAnnonceZip().trim());
             context.startActivity(intent);
         });
+
     }
-    void test(AnnonceVH holder){
+
+    void test(){
+
         SappAPI.getApi().create(AnnonceFavorisAPI.class).getAllAnnonceFavorisViaAPI(ID_USER_CURRENT)
                 .enqueue(new Callback<List<AnnonceFavoris>>() {
                     @Override
@@ -200,13 +197,10 @@ public class AnnonceAdapter extends RecyclerView.Adapter<AnnonceAdapter.AnnonceV
                         Log.i(TAG, "response : " + response);
                         List<AnnonceFavoris> annonceFavorisList = response.body();
 
-                        for (AnnonceFavoris annonce : annonceFavorisList) {
-                            int c = db.annonceFavorisDao().getAnnonceFavorisIfExist(annonce.getAnnonceId(), ID_USER_CURRENT);
-                            if (c > 0) {
-                                new AnnonceFavorisRepo(activity.getApplication()).insertLiked(annonce);
-                                holder.likeBtn.setImageResource(R.drawable.ic_favoris_red);
-                            }
-                        }
+                        AnnonceFavoris[] tableAnnonceFavoris = new AnnonceFavoris[annonceFavorisList.size()];
+                        annonceFavorisList.toArray(tableAnnonceFavoris);
+                        new AnnonceFavorisRepo(activity.getApplication()).insertLiked(tableAnnonceFavoris);
+
                     }
 
                     @Override

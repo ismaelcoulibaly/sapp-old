@@ -132,69 +132,59 @@ public class Home extends Fragment {
 
 
          //Recuperation de toutes les annonces
-//        SappAPI.getApi().create(AnnonceAPI.class)
-//                .getAllAnnonceViaAPI()
-//                .enqueue(new Callback<List<Annonce>>() {
-//                    @Override
-//                    public void onResponse(Call<List<Annonce>> call, Response<List<Annonce>> response) {
-//                        // Si conncetion Failed
-//                        if (!response.isSuccessful()) {
-//                            Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
-//                            return;
-//                        }
-//                        List<Annonce> newAnnonce = response.body();
-//                        Log.i(TAG, "newAnnonce : " + newAnnonce);
-//                        // inserer l'annonce dans la base de données locale via le Repository
-//                        Annonce[] tableAnnonce = new Annonce[newAnnonce.size()];
-//                        newAnnonce.toArray(tableAnnonce);
-//                        //for (Annonce annonce : newAnnonce) {
-//                        new AnnonceRepo(activity.getApplication()).insertAllAnnonce(tableAnnonce);
-//                        //}
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<Annonce>> call, Throwable t) {
-//                        // Si erreur 404
-//                        Log.e(TAG, t.getMessage());
-//                    }
-//                });
+        /*SappAPI.getApi().create(AnnonceAPI.class)
+                .getAllAnnonceViaAPI()
+                .enqueue(new Callback<List<Annonce>>() {
+                    @Override
+                    public void onResponse(Call<List<Annonce>> call, Response<List<Annonce>> response) {
+                        // Si conncetion Failed
+                        if (!response.isSuccessful()) {
+                            Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
+                            return;
+                        }
+                        List<Annonce> newAnnonce = response.body();
+                        Log.i(TAG, "newAnnonce : " + newAnnonce);
+                        // inserer l'annonce dans la base de données locale via le Repository
+                        assert newAnnonce != null;
+                        Annonce[] tableAnnonce = new Annonce[newAnnonce.size()];
+                        newAnnonce.toArray(tableAnnonce);
+                        new AnnonceRepo(activity.getApplication()).insertAllAnnonce(tableAnnonce);
+                    }
 
-//        SappAPI.getApi().create(AnnonceFavorisAPI.class).getAllAnnonceFavorisViaAPI(ID_USER_CURRENT)
-//                .enqueue(new Callback<List<AnnonceFavoris>>() {
-//                    @Override
-//                    public void onResponse(Call<List<AnnonceFavoris>> call, Response<List<AnnonceFavoris>> response) {
-//                        // Si conncetion Failed
-//                        if (!response.isSuccessful()) {
-//                            Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
-//                            return;
-//                        }
-//
-//                        Log.i(TAG, "response : " + response);
-//                        List<AnnonceFavoris> annonceFavorisList = response.body();
-//
-//                        AnnonceFavoris [] annonceFavorisTab = new AnnonceFavoris [annonceFavorisList.size()];
-//                        annonceFavorisList.toArray(annonceFavorisTab);
-//                        Log.i(TAG, "onResponse:hh "+annonceFavorisTab.length);
-//                        System.out.println("\n\n\n"+annonceFavorisTab.length);
-//
-//                        // new AnnonceFavorisRepo(activity.getApplication()).insertLiked(annonceFavorisTab);
-//
-//                    for (AnnonceFavoris annonce: annonceFavorisList) {
-//                            // Ajouter (ou insérer l'enregistrement dans la Table des Annonces Favories)
-//                            //insertIntoDatabaseWeb(annonce.getAnnonceId());
-////                            int c = db.annonceFavorisDao().getAnnonceFavorisIfExist(annonce.getAnnonceId(), ID_USER_CURRENT);
-////                            if(c != 0)
-//                                new AnnonceFavorisRepo(activity.getApplication()).insertLiked(annonce);
-//                                System.out.println("insertion reussit \n"+annonce.getAnnonceId());
-//                    }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<AnnonceFavoris>> call, Throwable t) {
-//                        // Si erreur 404
-//                        Log.e(TAG, t.getMessage());
-//                    }
-//                });
+                    @Override
+                    public void onFailure(Call<List<Annonce>> call, Throwable t) {
+                        // Si erreur 404
+                        Log.e(TAG, t.getMessage());
+                    }
+                });*/
+
+        /*SappAPI.getApi().create(AnnonceFavorisAPI.class).getAllAnnonceFavorisViaAPI(ID_USER_CURRENT)
+                .enqueue(new Callback<List<AnnonceFavoris>>() {
+                    @Override
+                    public void onResponse(Call<List<AnnonceFavoris>> call, Response<List<AnnonceFavoris>> response) {
+                        // Si conncetion Failed
+                        if (!response.isSuccessful()) {
+                            Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
+                            return;
+                        }
+
+                        Log.i(TAG, "response : " + response);
+                        List<AnnonceFavoris> annonceFavorisList = response.body();
+
+                        assert annonceFavorisList != null;
+                        AnnonceFavoris [] annonceFavorisTab = new AnnonceFavoris [annonceFavorisList.size()];
+                        annonceFavorisList.toArray(annonceFavorisTab);
+                        Log.i(TAG, "onResponse:hh "+annonceFavorisTab.length);
+                        System.out.println("\n\n\n"+annonceFavorisTab.length);
+                        new AnnonceFavorisRepo(activity.getApplication()).insertLiked(annonceFavorisTab);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<AnnonceFavoris>> call, Throwable t) {
+                        // Si erreur 404
+                        Log.e(TAG, t.getMessage());
+                    }
+                });*/
 
 
    }

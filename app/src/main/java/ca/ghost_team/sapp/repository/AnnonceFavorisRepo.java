@@ -4,12 +4,9 @@ import android.app.Application;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 
 import java.util.List;
 
-import ca.ghost_team.sapp.dao.AnnonceDao;
 import ca.ghost_team.sapp.dao.AnnonceFavorisDao;
 import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.model.Annonce;
@@ -24,18 +21,18 @@ public class AnnonceFavorisRepo {
     public AnnonceFavorisRepo(Application app) {
 
         dao = SappDatabase.getInstance(app).annonceFavorisDao();
-        AllAnnonceFavoriteByUser  = dao.findAnnonceFavoriteByUser(ID_USER_CURRENT);
+        AllAnnonceFavoriteByUser = dao.findAnnonceFavoriteByUser(ID_USER_CURRENT);
     }
 
     public LiveData<List<Annonce>> getAllAnnonceFavoriteByUser() {
         return AllAnnonceFavoriteByUser;
     }
 
-    public void insertLiked(AnnonceFavoris... annonce){
+    public void insertLiked(AnnonceFavoris... annonce) {
         new insertAnnonceAsyncTask(dao).execute(annonce);
     }
 
-    public void disLikeAnnonce(AnnonceFavoris... annonce){
+    public void disLikeAnnonce(AnnonceFavoris... annonce) {
         new disLikeAnnonceAsyncTask(dao).execute(annonce);
     }
 
@@ -49,8 +46,8 @@ public class AnnonceFavorisRepo {
 
         @Override
         protected Void doInBackground(AnnonceFavoris... annonces) {
+            uneAnnonceDao.insertLiked(annonces);
 
-            uneAnnonceDao.insertLiked(ID_USER_CURRENT, annonces[0].getAnnonceId());
             return null;
         }
     }
@@ -65,11 +62,10 @@ public class AnnonceFavorisRepo {
 
         @Override
         protected Void doInBackground(AnnonceFavoris... annonces) {
-            uneAnnonceDao.deleteAnnonceByID(ID_USER_CURRENT, annonces[0].getAnnonceId());
+            uneAnnonceDao.deleteAnnonceByID(annonces);
             return null;
         }
     }
-
 
 
 }

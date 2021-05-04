@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName="AnnonceFavoris"/*, primaryKeys = {"utilisateurId","annonceId"}*/,
+@Entity(tableName="AnnonceFavoris", primaryKeys = {"utilisateurId","annonceId"},
         foreignKeys = {
                 @ForeignKey(entity = Utilisateur.class,
                         parentColumns = "idUtilisateur",
@@ -21,10 +21,9 @@ import static androidx.room.ForeignKey.CASCADE;
         })
 public class AnnonceFavoris {
     public int annonceId;
-    @PrimaryKey(autoGenerate = true)
-    public int annonceFId;
     public int utilisateurId;
-
+    //@PrimaryKey(autoGenerate = true)
+    //public int annonceFId;
 
     public AnnonceFavoris(int utilisateurId, int annonceId) {
         this.utilisateurId = utilisateurId;

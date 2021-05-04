@@ -26,6 +26,7 @@ import ca.ghost_team.sapp.R;
 import ca.ghost_team.sapp.activity.DetailAnnonce;
 import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.model.Annonce;
+import ca.ghost_team.sapp.model.AnnonceFavoris;
 
 import static ca.ghost_team.sapp.BaseApplication.ID_USER_CURRENT;
 
@@ -124,7 +125,8 @@ public class FavorisAdapter extends RecyclerView.Adapter<FavorisAdapter.FavorisV
         listeAnnoncesFavoris.remove(position);
 
         // Supprimer l'enregitrement dans la Table des Annonces Favoris
-        db.annonceFavorisDao().deleteAnnonceByID(ID_USER_CURRENT, uneAnnonce.getIdAnnonce());
+        AnnonceFavoris annonceToDelete = new AnnonceFavoris(ID_USER_CURRENT,uneAnnonce.getIdAnnonce());
+        db.annonceFavorisDao().deleteAnnonceByID(annonceToDelete);
         notifyDataSetChanged();
     }
 
