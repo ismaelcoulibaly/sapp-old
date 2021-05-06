@@ -1,6 +1,5 @@
 package ca.ghost_team.sapp.navigation;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +19,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,18 +32,13 @@ import ca.ghost_team.sapp.adapter.AnnonceAdapter;
 import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.databinding.LayoutHomeBinding;
 import ca.ghost_team.sapp.model.Annonce;
-import ca.ghost_team.sapp.model.AnnonceFavoris;
-import ca.ghost_team.sapp.repository.AnnonceFavorisRepo;
 import ca.ghost_team.sapp.repository.AnnonceRepo;
 import ca.ghost_team.sapp.service.API.AnnonceAPI;
-import ca.ghost_team.sapp.service.API.AnnonceFavorisAPI;
 import ca.ghost_team.sapp.service.SappAPI;
 import ca.ghost_team.sapp.viewmodel.AnnonceViewModel;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static ca.ghost_team.sapp.BaseApplication.ID_USER_CURRENT;
 
 public class Home extends Fragment {
     private LayoutHomeBinding binding;
@@ -59,6 +54,7 @@ public class Home extends Fragment {
     private ImageButton filterShort;
     private ImageButton filterMore;
     private TextView filterAllText;
+    private SwipeRefreshLayout swipeHome;
     private MainActivity activity;
     private SappDatabase db;
 
@@ -92,6 +88,7 @@ public class Home extends Fragment {
         filterShort = binding.filterShort;
         filterTshirt = binding.filterTshirt;
         filterAllText = binding.filterAllText;
+        swipeHome = binding.swipeHome;
 
         // Evenements au Clic
         filterAll.setOnClickListener(this::filterAllAnnonce);
@@ -125,35 +122,38 @@ public class Home extends Fragment {
         // Setter toutes les modifications de l'Adapter dans le RecyclerView pour l'Affichage
         recyclerViewAnnonce.setAdapter(adapter);
 
-
-         //Recuperation de toutes les annonces
-         /*SappAPI.getApi().create(AnnonceAPI.class)
-                .getAllAnnonceViaAPI()
-                .enqueue(new Callback<List<Annonce>>() {
-                    @Override
-                    public void onResponse(Call<List<Annonce>> call, Response<List<Annonce>> response) {
-                        // Si conncetion Failed
-                        if (!response.isSuccessful()) {
-                            Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
-                            return;
+        swipeHome.setOnRefreshListener(() -> {
+            //Recuperation de toutes les annonces
+            SappAPI.getApi().create(AnnonceAPI.class)
+                    .getAllAnnonceViaAPI()
+                    .enqueue(new Callback<List<Annonce>>() {
+                        @Override
+                        public void onResponse(Call<List<Annonce>> call, Response<List<Annonce>> response) {
+                            // Si conncetion Failed
+                            if (!response.isSuccessful()) {
+                                Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
+                                return;
+                            }
+                            List<Annonce> newAnnonce = response.body();
+                            Log.i(TAG, "newAnnonce : " + newAnnonce);
+                            // inserer l'annonce dans la base de données locale via le Repository
+                            assert newAnnonce != null;
+                            Annonce[] tableAnnonce = new Annonce[newAnnonce.size()];
+                            newAnnonce.toArray(tableAnnonce);
+                            new AnnonceRepo(activity.getApplication()).insertAllAnnonce(tableAnnonce);
                         }
-                        List<Annonce> newAnnonce = response.body();
-                        Log.i(TAG, "newAnnonce : " + newAnnonce);
-                        // inserer l'annonce dans la base de données locale via le Repository
-                        assert newAnnonce != null;
-                        Annonce[] tableAnnonce = new Annonce[newAnnonce.size()];
-                        newAnnonce.toArray(tableAnnonce);
-                        new AnnonceRepo(activity.getApplication()).insertAllAnnonce(tableAnnonce);
-                    }
 
-                    @Override
-                    public void onFailure(Call<List<Annonce>> call, Throwable t) {
-                        // Si erreur 404
-                        Log.e(TAG, t.getMessage());
-                    }
-                });*/
+                        @Override
+                        public void onFailure(Call<List<Annonce>> call, Throwable t) {
+                            // Si erreur 404
+                            Log.e(TAG, t.getMessage());
+                        }
+                    });
+            swipeHome.setRefreshing(false);
+        });
 
-   }
+
+    }
 
     /**
      * Methode FilterList
