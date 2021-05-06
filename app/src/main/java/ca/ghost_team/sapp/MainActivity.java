@@ -7,24 +7,25 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import ca.ghost_team.sapp.activity.MessageActivity;
+import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.databinding.ActivityMainBinding;
 import ca.ghost_team.sapp.model.Annonce;
 import ca.ghost_team.sapp.navigation.AddPost;
 import ca.ghost_team.sapp.navigation.Favoris;
 import ca.ghost_team.sapp.navigation.Home;
-import ca.ghost_team.sapp.navigation.Message;
+import ca.ghost_team.sapp.navigation.Messages;
 import ca.ghost_team.sapp.navigation.Profil;
 import ca.ghost_team.sapp.repository.AnnonceRepo;
 import ca.ghost_team.sapp.viewmodel.AnnonceViewModel;
@@ -38,12 +39,17 @@ public class MainActivity extends AppCompatActivity{
     private ActivityMainBinding binding;
     public static final String ID_ANNONCE_CURRENT_NOTIFICATION = "ca.ghost_team.sapp.MainActivity.ID_ANNONCE_CURRENT_NOTIFICATION";
     public static final String ID_RECEIVER_CURRENT_NOTIFICATION = "ca.ghost_team.sapp.MainActivity.ID_RECEIVER_CURRENT_NOTIFICATION";
+    private int nombremessgeNoLus = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         MeowBottomNavigation navBar = binding.navBar;
+
+        SappDatabase db = Room.databaseBuilder(getApplication(), SappDatabase.class, BaseApplication.NAME_DB)
+                .allowMainThreadQueries().build();
+        db.annonceDao().start();
 
         // add menu item
         navBar.add(new MeowBottomNavigation.Model(1,R.drawable.ic_home));
@@ -68,8 +74,8 @@ public class MainActivity extends AppCompatActivity{
                     Log.i(LOG_TAG,"show AddPost.class");
                     break;
                 case 4:
-                    fragment = Message.class;
-                    Log.i(LOG_TAG,"show Message.class");
+                    fragment = Messages.class;
+                    Log.i(LOG_TAG,"show Messages.class");
                     break;
                 case 5:
                     fragment = Profil.class;
@@ -88,11 +94,14 @@ public class MainActivity extends AppCompatActivity{
         });
 
         messageViewModel = new ViewModelProvider(this).get(MessageViewModel.class);
+        messageViewModel.getCountMessageNoRead().observe(this, nbreMessageNoRead -> {
+            navBar.setCount(4, String.valueOf(nbreMessageNoRead));
+            nombremessgeNoLus = nbreMessageNoRead;
+        });
 
         messageViewModel.getAllMessagesReceiver().observe(this, messagesRecus -> {
-            navBar.setCount(4, String.valueOf(messagesRecus.size()));
 
-            if(messagesRecus.size() > 0){
+            if(nombremessgeNoLus > 0){
                 int idAnnonce = messagesRecus.get(messagesRecus.size() - 1).getAnnonceId();
                 String message = messagesRecus.get(messagesRecus.size() - 1).getMessage();
                 int idSender = messagesRecus.get(messagesRecus.size() - 1).getIdSender();
@@ -108,6 +117,8 @@ public class MainActivity extends AppCompatActivity{
                                 .setContentText(message)
                                 .setStyle(new NotificationCompat.BigTextStyle()
                                         .bigText(message))
+                                .setGroup(BaseApplication.CHANNEL_DEFAULT)
+                                .setGroupSummary(true)
                                 .setAutoCancel(true);
 
                 Intent intent = new Intent(this, MessageActivity.class);
@@ -125,7 +136,8 @@ public class MainActivity extends AppCompatActivity{
 
         });
 
-        navBar.show(3,true);
+        // Le Fragment qui s'affiche par Default
+        navBar.show(1,true);
 
         // pour éviter les erreurs
         navBar.setOnClickMenuListener(item -> {});

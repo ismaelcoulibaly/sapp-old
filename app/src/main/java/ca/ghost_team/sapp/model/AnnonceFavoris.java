@@ -16,8 +16,7 @@ import static androidx.room.ForeignKey.CASCADE;
                         onDelete = CASCADE),
                 @ForeignKey(entity = Annonce.class,
                         parentColumns = "idAnnonce",
-                        childColumns = "annonceId",
-                        onDelete = CASCADE)
+                        childColumns = "annonceId")
         })
 public class AnnonceFavoris {
     public int annonceId;

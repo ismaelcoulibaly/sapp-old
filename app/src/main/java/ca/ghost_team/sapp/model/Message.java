@@ -17,8 +17,7 @@ import static androidx.room.ForeignKey.CASCADE;
 
                 @ForeignKey(entity = Annonce.class,
                         parentColumns = "idAnnonce",
-                        childColumns = "annonceId",
-                        onDelete = CASCADE)
+                        childColumns = "annonceId")
         })
 public class Message {
 
@@ -99,7 +98,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return "Message{" +
+        return "Messages{" +
                 "idMessage=" + idMessage +
                 ", message='" + message + '\'' +
                 ", idSender=" + idSender +

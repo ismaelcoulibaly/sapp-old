@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,6 +24,7 @@ import ca.ghost_team.sapp.adapter.ListMessageAdapter;
 import ca.ghost_team.sapp.adapter.MessageAdapter;
 import ca.ghost_team.sapp.databinding.ActivityMessageBinding;
 import ca.ghost_team.sapp.model.Message;
+import ca.ghost_team.sapp.navigation.Messages;
 import ca.ghost_team.sapp.repository.MessageRepo;
 import ca.ghost_team.sapp.viewmodel.MessageViewModel;
 
@@ -65,7 +67,7 @@ public class MessageActivity extends AppCompatActivity {
         idAnnonceNotify = bundle.getInt(MainActivity.ID_ANNONCE_CURRENT_NOTIFICATION);
         idReceiverNotify = bundle.getInt(MainActivity.ID_RECEIVER_CURRENT_NOTIFICATION);
 
-        /* Venant de ListMessageAdapter (Fragment Message)
+        /* Venant de ListMessageAdapter (Fragment Messages)
         /* Si les informations idAnnonce et idReceiver viennent de ListMessageAdapter sur le click de l'Item conversation */
         idAnnonceCurrentVendeur = bundle.getInt(ListMessageAdapter.ID_ANNONCE_CURRENT_LIST_MESSAGE);
         idReceiverCurrentVendeur = bundle.getInt(ListMessageAdapter.ID_RECEIVER_CURRENT_LIST_MESSAGE);
@@ -80,7 +82,7 @@ public class MessageActivity extends AppCompatActivity {
         mMessageRecycler.setAdapter(mMessageAdapter);
         messageViewModel = new ViewModelProvider(this).get(MessageViewModel.class);
 
-        /* Venant de ListMessageAdapter (Fragment Message) */
+        /* Venant de ListMessageAdapter (Fragment Messages) */
         if(idReceiverCurrentVendeur != 0)
             sendMessageBetween(idReceiverCurrentVendeur, idAnnonceCurrentVendeur);
 
@@ -92,10 +94,16 @@ public class MessageActivity extends AppCompatActivity {
         else
             sendMessageBetween(idReceiverCurrent, idAnnonceCurrent);
 
-        // Envoi du Message au clic du Bouton "Contacter"
+        // Envoi du Messages au clic du Bouton "Contacter"
         sendMessage.setOnClickListener(this::sendMessage);
 
     }
+
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent = new Intent(MessageActivity.this, MainActivity.class);
+//        startActivity(intent);
+//    }
 
     /**
      * La methode qui permet de donner à l'Adapter les messages entre deux Utilisateurs par rapport à une Annonce donnée
@@ -114,21 +122,21 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     /**
-     * Methode qui permet d'envoyer un Message par rapport à la provenance des informations
-     * @see {idReceiverCurrentVendeur != 0} alors ce sont les informations venues du ListMessageAdapter (Fragment Message)
+     * Methode qui permet d'envoyer un Messages par rapport à la provenance des informations
+     * @see {idReceiverCurrentVendeur != 0} alors ce sont les informations venues du ListMessageAdapter (Fragment Messages)
      * @see else les informations venues du DetailAnnonce (Button Contacter)
      * */
     private void sendMessage(View view) {
 
         if(TextUtils.isEmpty(editMessage.getText().toString().trim())){
-            Toast.makeText(this, "Entrer un Message", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Entrer un Messages", Toast.LENGTH_SHORT).show();
             return;
         }
 
         Message myMessage;
 
-        // Instancier le Message à envoyer et Inserer dans la BD
-        // TODO implémenter le pattern Builder pour l'entité Message
+        // Instancier le Messages à envoyer et Inserer dans la BD
+        // TODO implémenter le pattern Builder pour l'entité Messages
         if(idReceiverCurrentVendeur != 0){
             myMessage = new Message(
                     editMessage.getText().toString().trim(),
@@ -160,7 +168,7 @@ public class MessageActivity extends AppCompatActivity {
        new MessageRepo(getApplication()).sendMessage(myMessage);
         Log.i(TAG, "[" + myMessage.toString() + "] - ENVOYÉ !");
 
-        // Réinitialiser le champ d'édition après l'envoi du Message
+        // Réinitialiser le champ d'édition après l'envoi du Messages
         editMessage.setText("");
     }
 

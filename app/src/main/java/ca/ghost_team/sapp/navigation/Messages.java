@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,12 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import ca.ghost_team.sapp.MainActivity;
 import ca.ghost_team.sapp.R;
 import ca.ghost_team.sapp.adapter.ListMessageAdapter;
-import ca.ghost_team.sapp.adapter.MessageAdapter;
 import ca.ghost_team.sapp.databinding.LayoutMessageBinding;
 import ca.ghost_team.sapp.viewmodel.MessageViewModel;
 
-public class Message extends Fragment {
-    private static final String TAG = Message.class.getSimpleName();
+public class Messages extends Fragment {
+    private static final String TAG = Messages.class.getSimpleName();
     private LayoutMessageBinding binding;
     private RecyclerView recyclerViewListMessage;
     private ListMessageAdapter mMessageAdapter;
@@ -60,7 +58,7 @@ public class Message extends Fragment {
         messageViewModel.getAllMessagesReceiver().observe(getViewLifecycleOwner(), conversation -> {
             mMessageAdapter.addConversation(conversation);
             mMessageAdapter.notifyDataSetChanged();
-            Log.i(TAG, "RecyclerView Message correct");
+            Log.i(TAG, "RecyclerView Messages correct");
         });
     }
 }

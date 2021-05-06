@@ -72,13 +72,8 @@ public class Home extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        ((MainActivity) context).setTitle(R.string.home);
+        ((MainActivity) context).setTitle(R.string.market);
         this.activity = (MainActivity) getActivity();
-
-
-
-
-
     }
 
     @Override
@@ -183,42 +178,49 @@ public class Home extends Fragment {
     }
 
     private void filterPantAnnonce(View view) {
+        Objects.requireNonNull(getActivity()).setTitle(R.string.pants);
         initColorFilter();
         filterPant.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.bg_white_rounded_yellow));
         filterList(1);
     }
 
     private void filterTshirtAnnonce(View view) {
+        Objects.requireNonNull(getActivity()).setTitle(R.string.Tshirt);
         initColorFilter();
         filterTshirt.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.bg_white_rounded_yellow));
         filterList(2);
     }
 
     private void filterHoodieAnnonce(View view) {
+        Objects.requireNonNull(getActivity()).setTitle(R.string.Hoodie);
         initColorFilter();
         filterHoodie.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.bg_white_rounded_yellow));
         filterList(3);
     }
 
     private void filterShortAnnonce(View view) {
+        Objects.requireNonNull(getActivity()).setTitle(R.string.Short);
         initColorFilter();
         filterShort.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.bg_white_rounded_yellow));
         filterList(4);
     }
 
     private void filterCapAnnonce(View view) {
+        Objects.requireNonNull(getActivity()).setTitle(R.string.Cap);
         initColorFilter();
         filterCap.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.bg_white_rounded_yellow));
         filterList(5);
     }
 
     private void filterMoreAnnonce(View view) {
+        Objects.requireNonNull(getActivity()).setTitle(R.string.Other);
         initColorFilter();
         filterMore.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.bg_white_rounded_yellow));
         filterList(6);
     }
 
     private void filterAllAnnonce(View view) {
+        Objects.requireNonNull(getActivity()).setTitle(R.string.market);
         initColorFilter();
         filterAll.setBackground(ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.bg_white_rounded_yellow));
         filterAllText.setTextColor(ContextCompat.getColor(getContext(), R.color.black));

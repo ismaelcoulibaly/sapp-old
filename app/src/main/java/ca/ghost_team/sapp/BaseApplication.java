@@ -20,8 +20,10 @@ import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import ca.ghost_team.sapp.database.SappDatabase;
+import ca.ghost_team.sapp.model.Message;
 import ca.ghost_team.sapp.repository.AnnonceFavorisRepo;
 import ca.ghost_team.sapp.repository.AnnonceRepo;
+import ca.ghost_team.sapp.repository.MessageRepo;
 import ca.ghost_team.sapp.repository.UtilisateurRepo;
 
 
@@ -34,6 +36,7 @@ public class BaseApplication extends MultiDexApplication {
     private AnnonceRepo annonceRepo;
     private AnnonceFavorisRepo annonceFavorisRepo;
     private UtilisateurRepo utilisateurRepo;
+    private MessageRepo messageRepo;
     private final String TAG =  BaseApplication.class.getSimpleName();
 
     @Override
@@ -43,6 +46,7 @@ public class BaseApplication extends MultiDexApplication {
         annonceRepo = new AnnonceRepo(this);
         annonceFavorisRepo = new AnnonceFavorisRepo(this);
         utilisateurRepo = new UtilisateurRepo(this);
+        messageRepo = new MessageRepo(this);
         creatChannel();
         // Firebase Subscribe
         Log.i("XXXX", "subscription init !");

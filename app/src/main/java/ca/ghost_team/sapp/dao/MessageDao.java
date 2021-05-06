@@ -29,7 +29,13 @@ public interface MessageDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void sendMessage(Message... message);
 
-    @Update
-    void putRead(Message... message);
+    @Query("UPDATE MessageTable SET isRead = 1 WHERE idSender = :receiver AND idReceiver = :idUser AND annonceId = :annonceId AND isRead = 0")
+    void putRead(int idUser, int receiver, int annonceId);
+
+    @Query("SELECT COUNT(*) FROM MessageTable WHERE idReceiver = :idUser AND isRead = 0")
+    LiveData<Integer> countMessageNoRead(int idUser);
+
+    @Query("SELECT COUNT(*) FROM MessageTable WHERE idReceiver = :idUser AND isRead = 0 GROUP BY annonceId, idSender")
+    LiveData<Integer> countMessageNoReadCategory(int idUser);
 
 }

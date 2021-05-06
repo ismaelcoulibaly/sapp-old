@@ -18,16 +18,22 @@ public class MessageRepo {
     private final MessageDao dao;
     private LiveData<List<Message>> allMessages;
     private LiveData<List<Message>> allMessagesReceiver;
+    private LiveData<Integer> countMessageNoRead;
 
     public MessageRepo(Application application) {
         SappDatabase database = SappDatabase.getInstance(application);
         dao = database.messageDao();
         this.allMessages = dao.allMessages(BaseApplication.ID_USER_CURRENT);
         this.allMessagesReceiver = dao.allMessagesReceiver(BaseApplication.ID_USER_CURRENT);
+        this.countMessageNoRead = dao.countMessageNoRead(BaseApplication.ID_USER_CURRENT);
     }
 
     public LiveData<List<Message>> getAllMessages() {
         return allMessages;
+    }
+
+    public LiveData<Integer> getCountMessageNoRead() {
+        return countMessageNoRead;
     }
 
     public LiveData<List<Message>> getAllMessageBetween(int idSender, int idAnnonceDiscussion) {
@@ -72,8 +78,9 @@ public class MessageRepo {
 
         @Override
         protected Void doInBackground(Message... message) {
-            message[0].setRead(true);
-            unMessageDao.putRead(message);
+            int receiver = message[0].getIdReceiver();
+            int annonceId = message[0].getAnnonceId();
+            unMessageDao.putRead(BaseApplication.ID_USER_CURRENT,receiver,annonceId);
             return null;
         }
 

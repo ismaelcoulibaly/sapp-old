@@ -99,7 +99,7 @@ public class MessageAdapter extends RecyclerView.Adapter{
     }
 
     /**
-     * Methode qui permet de passer à la liste de Message la nouvelle liste venant de la BD
+     * Methode qui permet de passer à la liste de Messages la nouvelle liste venant de la BD
      * @param listMessages liste à passer à l'adapter
      * @return void
      * */
