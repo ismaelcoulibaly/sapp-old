@@ -4,18 +4,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverters;
-
-import com.google.gson.annotations.SerializedName;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import ca.ghost_team.sapp.Utils.Conversion;
 
 import static androidx.room.ForeignKey.CASCADE;
-import static ca.ghost_team.sapp.Utils.Conversion.toTimeStr;
 
 @Entity(tableName = "annonceTable",
         foreignKeys = {

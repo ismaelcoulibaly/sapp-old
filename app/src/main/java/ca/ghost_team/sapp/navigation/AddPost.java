@@ -46,9 +46,8 @@ import ca.ghost_team.sapp.service.SappAPI;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.internal.EverythingIsNonNull;
 
-import static ca.ghost_team.sapp.Utils.Conversion.toTimeStr;
+import static ca.ghost_team.sapp.Utils.Utilitaire.toTimeStr;
 
 public class AddPost extends Fragment implements AdapterView.OnItemSelectedListener {
 

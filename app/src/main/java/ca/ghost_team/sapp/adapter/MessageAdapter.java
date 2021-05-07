@@ -16,7 +16,7 @@ import java.util.List;
 
 import ca.ghost_team.sapp.BaseApplication;
 import ca.ghost_team.sapp.R;
-import ca.ghost_team.sapp.Utils.Conversion;
+import ca.ghost_team.sapp.Utils.Utilitaire;
 import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.model.Message;
 import ca.ghost_team.sapp.model.Utilisateur;
@@ -83,7 +83,7 @@ public class MessageAdapter extends RecyclerView.Adapter{
                 ((ReceivedMessageVH) holder).messageTextReceiver.setText(message.getMessage());
 
                 // Format the stored timestamp into a readable String using method.
-                ((ReceivedMessageVH) holder).timeTextReceiver.setText(Conversion.toTimeStr(message.getCreationDate()));
+                ((ReceivedMessageVH) holder).timeTextReceiver.setText(Utilitaire.toTimeStr(message.getCreationDate()));
                 Utilisateur user = db.utilisateurDao().getInfoUtilisateur(message.getIdSender());
 
                 if(user != null)
@@ -142,7 +142,7 @@ public class MessageAdapter extends RecyclerView.Adapter{
             messageText.setText(message.getMessage());
 
             // Format the stored timestamp into a readable String using method.
-            timeText.setText(Conversion.toTimeStr(message.getCreationDate()));
+            timeText.setText(Utilitaire.toTimeStr(message.getCreationDate()));
         }
     }
 
