@@ -21,6 +21,7 @@ import ca.ghost_team.sapp.Utils.Utilitaire;
 import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.databinding.ActivityRegisterBinding;
 import ca.ghost_team.sapp.model.Utilisateur;
+import ca.ghost_team.sapp.repository.UtilisateurRepo;
 import ca.ghost_team.sapp.service.API.UtilisateurAPI;
 import ca.ghost_team.sapp.service.SappAPI;
 import retrofit2.Call;
@@ -39,15 +40,11 @@ public class Register extends AppCompatActivity {
     private EditText register_email;
     private TextView sign_in;
     private ImageButton btn_register;
-    private SappDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
-        db = Room.databaseBuilder(getApplication(), SappDatabase.class, BaseApplication.NAME_DB)
-                .allowMainThreadQueries()
-                .build();
 
         getSupportActionBar().hide();
 
@@ -118,16 +115,6 @@ public class Register extends AppCompatActivity {
                         assert messageServer != null;
                         String messageClean = Utilitaire.decode(messageServer, 5);
 
-                        if (messageClean.equalsIgnoreCase("existing")) {
-                            Toast.makeText(Register.this, "L'Utilisateur existe déjà", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        if (messageClean.equalsIgnoreCase("timeout")) {
-                            Toast.makeText(Register.this, "TimeOut ! Vérifier la qualité de votre connexion", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
                         // Extraire les informations venus du Server
                         String[] table = messageClean.split("/");
                         int utilisateurIdFromServer = Integer.parseInt(table[0]);
@@ -137,16 +124,15 @@ public class Register extends AppCompatActivity {
                         // L'Utilisateur a été inseré dans la base de donnée distante
                         // On peut à présent l'insérer dans la base de données locale
                         // avec son mot de passe Hashé
-                        BaseApplication.ID_USER_CURRENT = utilisateurIdFromServer;
                         Utilisateur userAuth = new Utilisateur(
                                 utilisateurNomFromServer,
-                                null,
+                                register_username.getText().toString().trim(),
                                 Utilitaire.hashage(register_password.getText().toString().trim()),
                                 utilisateurEmailFromServer
                         );
                         userAuth.setIdUtilisateur(utilisateurIdFromServer);
 
-                        db.utilisateurDao().insertUtilisateur(userAuth);
+                        new UtilisateurRepo(getApplication()).insertUtilisateur(userAuth);
                         Toast.makeText(Register.this, "Enregistré avec succès", Toast.LENGTH_SHORT).show();
 
                         //Lancer l'activity Main

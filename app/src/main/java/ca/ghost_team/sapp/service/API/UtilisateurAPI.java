@@ -17,15 +17,11 @@ public interface UtilisateurAPI {
 
     @FormUrlEncoded
     @POST("user.php")
-    Call<Utilisateur> getUtilisateurViaAPI(
-            @Field("username") String nom,
-            @Field("password") String motpasse
-    );
+    Call<String> getUtilisateurViaAPI(@Field("checksum") String checksum);
 
 //    @GET("user.php")
-//    Call<Utilisateur> getUtilisateurViaAPI(
-//            @Query("username") String nom,
-//            @Query("password") String motpasse
+//    Call<String> getUtilisateurViaAPI(
+//            @Query("checksum") String checksum
 //    );
 
     @FormUrlEncoded
@@ -33,11 +29,8 @@ public interface UtilisateurAPI {
     Call<String> createUtilisateurViaAPI(@Field("checksum") String checksum);
 
 //    @GET("signup.php")
-//    Call<Utilisateur> createUtilisateurViaAPI(
-//            @Query("fullname") String fullname,
-//            @Query("username") String username,
-//            @Query("password") String password,
-//            @Query("email") String email
+//    Call<String> createUtilisateurViaAPI(
+//            @Query("checksum") String checksum
 //    );
 
     @FormUrlEncoded

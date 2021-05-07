@@ -137,6 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/champsInfo"
                 android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="10dp"
                 android:gravity="center"
                 android:background="@color/BackgroundAnnonce">
 
@@ -164,6 +165,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/annonceVendueContainer"
                 android:layout_marginTop="10dp"
+                android:layout_marginHorizontal="10dp"
                 android:gravity="center"
                 android:background="@color/BackgroundAnnonce">
 
