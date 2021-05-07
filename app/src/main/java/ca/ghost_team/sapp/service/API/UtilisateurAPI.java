@@ -46,4 +46,8 @@ public interface UtilisateurAPI {
             @Query("prix") int prix
     );
 
+    @FormUrlEncoded
+    @POST("userbyid.php")
+    Call<String> getUtilisateurbyID(@Field("id") int id);
+
 }
