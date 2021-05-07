@@ -20,10 +20,10 @@ import ca.ghost_team.sapp.model.Utilisateur;
 @Dao
 public interface AnnonceDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAllAnnonces(Annonce... annonce);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAnnonce(Annonce annonce);
 
     @Query("SELECT * FROM annonceTable")
