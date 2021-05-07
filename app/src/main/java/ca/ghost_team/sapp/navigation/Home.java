@@ -56,7 +56,6 @@ public class Home extends Fragment {
     private TextView filterAllText;
     private SwipeRefreshLayout swipeHome;
     private MainActivity activity;
-    private SappDatabase db;
 
     @Nullable
     @Override
@@ -75,9 +74,6 @@ public class Home extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        this.db = Room.databaseBuilder(getContext(), SappDatabase.class, BaseApplication.NAME_DB)
-                .allowMainThreadQueries().build();
 
         // Binding Fields
         filterAll = binding.filterAll;
