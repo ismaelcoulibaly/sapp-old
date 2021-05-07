@@ -119,6 +119,9 @@ public class Home extends Fragment {
         recyclerViewAnnonce.setAdapter(adapter);
 
         swipeHome.setOnRefreshListener(() -> {
+            // Supprimer toutes les annonces dans la table
+            new AnnonceRepo(activity.getApplication()).deleteAllAnnonce();
+
             //Recuperation de toutes les annonces
             SappAPI.getApi().create(AnnonceAPI.class)
                     .getAllAnnonceViaAPI()

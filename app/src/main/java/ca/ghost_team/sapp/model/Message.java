@@ -10,15 +10,15 @@ import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "MessageTable",
         foreignKeys = {
-                @ForeignKey(entity = Utilisateur.class,
-                        parentColumns = "idUtilisateur",
-                        childColumns = "idReceiver",
-                        onDelete = CASCADE),
+//                @ForeignKey(entity = Utilisateur.class,
+//                        parentColumns = "idUtilisateur",
+//                        childColumns = "idReceiver",
+//                        onDelete = CASCADE),
 
-                @ForeignKey(entity = Annonce.class,
-                        parentColumns = "idAnnonce",
-                        childColumns = "annonceId",
-                        onDelete = CASCADE)
+//                @ForeignKey(entity = Annonce.class,
+//                        parentColumns = "idAnnonce",
+//                        childColumns = "annonceId",
+//                        onDelete = CASCADE)
         })
 public class Message {
 
@@ -30,9 +30,9 @@ public class Message {
     private int idSender;
     private int idReceiver;
     private int annonceId;
-    private Date creationDate;
+    private String creationDate;
 
-    public Message(String message, int idSender, int idReceiver, int annonceId, Date creationDate) {
+    public Message(String message, int idSender, int idReceiver, int annonceId, String creationDate) {
         this.message = message;
         this.idSender = idSender;
         this.idReceiver = idReceiver;
@@ -73,11 +73,11 @@ public class Message {
         this.idSender = idSender;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 

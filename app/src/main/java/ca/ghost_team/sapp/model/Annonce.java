@@ -14,10 +14,10 @@ import static androidx.room.ForeignKey.CASCADE;
 //                        childColumns = "utilisateurId",
 //                        onDelete = CASCADE),
 
-                @ForeignKey(entity = CategorieAnnonce.class,
-                        parentColumns = "idCategorie",
-                        childColumns = "categorieId",
-                        onDelete = CASCADE)
+//                @ForeignKey(entity = CategorieAnnonce.class,
+//                        parentColumns = "idCategorie",
+//                        childColumns = "categorieId",
+//                        onDelete = CASCADE)
         }
 )
 public class Annonce {

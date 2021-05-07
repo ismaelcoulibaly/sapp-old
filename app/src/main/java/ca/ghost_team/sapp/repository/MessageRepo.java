@@ -62,7 +62,8 @@ public class MessageRepo {
 
         @Override
         protected Void doInBackground(Message... message) {
-            unMessageDao.sendMessage(message);
+            //for(Message msg : message)
+            unMessageDao.sendMessage(message[0]);
             return null;
         }
 

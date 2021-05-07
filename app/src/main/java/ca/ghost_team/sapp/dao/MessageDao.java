@@ -23,11 +23,11 @@ public interface MessageDao {
     @Query("SELECT * FROM MessageTable WHERE ((idReceiver = :idUser AND idSender = :idSender) OR (idReceiver = :idSender AND idSender =:idUser)) AND annonceId = :idAnnonce")
     LiveData<List<Message>> allMessagesBetween(int idUser, int idSender, int idAnnonce);
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void sendMessage(Message message);
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void sendMessage(Message... message);
+    /*@Insert(onConflict = OnConflictStrategy.IGNORE)
+    void sendMessage(Message... message);*/
 
     @Query("UPDATE MessageTable SET isRead = 1 WHERE idSender = :receiver AND idReceiver = :idUser AND annonceId = :annonceId AND isRead = 0")
     void putRead(int idUser, int receiver, int annonceId);

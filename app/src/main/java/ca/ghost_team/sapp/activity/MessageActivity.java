@@ -20,13 +20,19 @@ import java.util.Date;
 import ca.ghost_team.sapp.BaseApplication;
 import ca.ghost_team.sapp.MainActivity;
 import ca.ghost_team.sapp.R;
+import ca.ghost_team.sapp.Utils.Utilitaire;
 import ca.ghost_team.sapp.adapter.ListMessageAdapter;
 import ca.ghost_team.sapp.adapter.MessageAdapter;
 import ca.ghost_team.sapp.databinding.ActivityMessageBinding;
 import ca.ghost_team.sapp.model.Message;
 import ca.ghost_team.sapp.navigation.Messages;
 import ca.ghost_team.sapp.repository.MessageRepo;
+import ca.ghost_team.sapp.service.API.MessageAPI;
+import ca.ghost_team.sapp.service.SappAPI;
 import ca.ghost_team.sapp.viewmodel.MessageViewModel;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MessageActivity extends AppCompatActivity {
 
@@ -136,6 +142,7 @@ public class MessageActivity extends AppCompatActivity {
         Message myMessage;
 
         // Instancier le Messages à envoyer et Inserer dans la BD
+        // On fait un test pour gérer la provenance
         // TODO implémenter le pattern Builder pour l'entité Messages
         if(idReceiverCurrentVendeur != 0){
             myMessage = new Message(
@@ -143,7 +150,7 @@ public class MessageActivity extends AppCompatActivity {
                     BaseApplication.ID_USER_CURRENT,
                     idReceiverCurrentVendeur,
                     idAnnonceCurrentVendeur,
-                    new Date()
+                    Utilitaire.toTimeStr(new Date())
             );
         }
         else if(idReceiverNotify != 0){
@@ -152,7 +159,7 @@ public class MessageActivity extends AppCompatActivity {
                     BaseApplication.ID_USER_CURRENT,
                     idReceiverNotify,
                     idAnnonceNotify,
-                    new Date()
+                    Utilitaire.toTimeStr(new Date())
             );
         }
         else{
@@ -161,12 +168,44 @@ public class MessageActivity extends AppCompatActivity {
                    BaseApplication.ID_USER_CURRENT,
                    idReceiverCurrent,
                    idAnnonceCurrent,
-                   new Date()
+                   Utilitaire.toTimeStr(new Date())
            );
       }
 
-       new MessageRepo(getApplication()).sendMessage(myMessage);
-        Log.i(TAG, "[" + myMessage.toString() + "] - ENVOYÉ !");
+        /* Envoyer (Insérer) un message dans la base de données distant */
+        SappAPI.getApi().create(MessageAPI.class).sendMessageViaAPI(
+                myMessage.getMessage(),
+                myMessage.getIdSender(),
+                myMessage.getIdReceiver(),
+                myMessage.getAnnonceId(),
+                myMessage.getCreationDate()
+        ).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (!response.isSuccessful()) {
+                    Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
+                    return;
+                }
+
+                Log.i(TAG, "response : " + response);
+                String messageServer = response.body();
+
+                if(messageServer.equalsIgnoreCase("true")){
+                    Toast.makeText(MessageActivity.this, "Message envoyé !", Toast.LENGTH_SHORT).show();
+                    new MessageRepo(getApplication()).sendMessage(myMessage);
+                    Log.i(TAG, "[" + myMessage.toString() + "] - ENVOYÉ !");
+                }
+
+                else
+                    Toast.makeText(MessageActivity.this, "Message déjà Envoyé", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                // Si erreur 404
+                Log.e(TAG, t.getMessage());
+            }
+        });
 
         // Réinitialiser le champ d'édition après l'envoi du Messages
         editMessage.setText("");
