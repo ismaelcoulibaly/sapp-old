@@ -5,6 +5,7 @@ import java.util.List;
 
 import ca.ghost_team.sapp.model.Annonce;
 import ca.ghost_team.sapp.model.Utilisateur;
+import ca.ghost_team.sapp.service.dto.UtilisateurDTO;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -16,32 +17,20 @@ public interface UtilisateurAPI {
 
     @FormUrlEncoded
     @POST("user.php")
-    Call<Utilisateur> getUtilisateurViaAPI(
-            @Field("username") String nom,
-            @Field("password") String motpasse
-    );
+    Call<String> getUtilisateurViaAPI(@Field("checksum") String checksum);
 
 //    @GET("user.php")
-//    Call<Utilisateur> getUtilisateurViaAPI(
-//            @Query("username") String nom,
-//            @Query("password") String motpasse
+//    Call<String> getUtilisateurViaAPI(
+//            @Query("checksum") String checksum
 //    );
 
     @FormUrlEncoded
     @POST("signup.php")
-    Call<Utilisateur> createUtilisateurViaAPI(
-            @Field("fullname") String fullname,
-            @Field("username") String username,
-            @Field("password") String password,
-            @Field("email") String email
-    );
+    Call<String> createUtilisateurViaAPI(@Field("checksum") String checksum);
 
 //    @GET("signup.php")
-//    Call<Utilisateur> createUtilisateurViaAPI(
-//            @Query("fullname") String fullname,
-//            @Query("username") String username,
-//            @Query("password") String password,
-//            @Query("email") String email
+//    Call<String> createUtilisateurViaAPI(
+//            @Query("checksum") String checksum
 //    );
 
     @FormUrlEncoded

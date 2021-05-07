@@ -17,7 +17,7 @@ public interface MessageDao {
     @Query("SELECT * FROM MessageTable WHERE idReceiver = :idUser OR idSender = :idUser")
     LiveData<List<Message>> allMessages(int idUser);
 
-    @Query("SELECT * FROM MessageTable WHERE idReceiver = :idUser GROUP BY annonceId")
+    @Query("SELECT * FROM MessageTable WHERE idReceiver = :idUser GROUP BY idSender")
     LiveData<List<Message>> allMessagesReceiver(int idUser);
 
     @Query("SELECT * FROM MessageTable WHERE ((idReceiver = :idUser AND idSender = :idSender) OR (idReceiver = :idSender AND idSender =:idUser)) AND annonceId = :idAnnonce")

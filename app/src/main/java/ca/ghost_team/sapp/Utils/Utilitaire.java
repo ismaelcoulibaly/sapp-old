@@ -80,6 +80,8 @@ public class Utilitaire {
 
     /**
      * Methode qui permet d'encryptage
+     * @param text : le text à encrypter
+     * @param key : la clé secrète utilisée
      * @return String
      * */
     public static String encrypt(@NonNull String text, int key){
@@ -93,5 +95,25 @@ public class Utilitaire {
         }
         return result.toString();
     }
+
+    /**
+     * Methode qui permet le decryptage
+     * @param text : le text à decrypter
+     * @param key : la clé secrète utilisée
+     * @return String
+     * */
+    public static String decode(@NonNull String text, int key){
+        StringBuilder convert = new StringBuilder(text);
+        StringBuilder result = new StringBuilder();
+        String textReverse = convert.reverse().toString();
+        char[] tableChar = textReverse.toCharArray();
+
+        for (char c : tableChar){
+            result.append((char) (c - key));
+        }
+        return result.toString();
+    }
+
+
 
 }

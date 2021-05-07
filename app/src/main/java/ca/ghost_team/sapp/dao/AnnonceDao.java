@@ -20,10 +20,10 @@ import ca.ghost_team.sapp.model.Utilisateur;
 @Dao
 public interface AnnonceDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAllAnnonces(Annonce... annonce);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertAnnonce(Annonce annonce);
 
     @Query("SELECT * FROM annonceTable")
@@ -37,8 +37,8 @@ public interface AnnonceDao {
     @Query("SELECT * FROM annonceTable WHERE idAnnonce = :annonceId")
     Annonce getInfoAnnonce(int annonceId);
 
-    @Delete
-    void deleteAnnonce(Annonce annonce);
+    @Query("DELETE FROM annonceTable WHERE idAnnonce =:idAnnonce")
+    void deleteAnnonce(int idAnnonce);
 
     @Update
     void updateAnnonce(Annonce annonce);
