@@ -52,4 +52,13 @@ public interface AnnonceAPI {
 
     @POST("annonces.php")
     Call<List<Annonce>> getAllAnnonceViaAPI();
+
+    @FormUrlEncoded
+    @POST("deletemyannonce.php")
+    Call<Annonce> deleteMyAnnonce(
+            @Field("idAnnonce") int idAnnonce,
+            @Field("utilisateurId") int utilisateurId,
+            @Field("titre") String titre,
+            @Field("prix") int prix
+    );
 }

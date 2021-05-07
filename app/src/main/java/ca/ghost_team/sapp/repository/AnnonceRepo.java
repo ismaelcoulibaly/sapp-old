@@ -99,7 +99,7 @@ public class AnnonceRepo {
 
         @Override
         protected Void doInBackground(Annonce... annonces) {
-            uneAnnonceDao.deleteAnnonce(annonces[0]);
+            uneAnnonceDao.deleteAnnonce(annonces[0].getIdAnnonce());
             return null;
         }
     }
