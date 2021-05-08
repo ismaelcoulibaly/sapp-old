@@ -38,4 +38,8 @@ public interface MessageDao {
     @Query("SELECT COUNT(*) FROM MessageTable WHERE idReceiver = :idUser AND isRead = 0 GROUP BY annonceId, idSender")
     LiveData<Integer> countMessageNoReadCategory(int idUser);
 
+
+    @Query("DELETE FROM MessageTable")
+    void deleteAllAMessage();
+
 }

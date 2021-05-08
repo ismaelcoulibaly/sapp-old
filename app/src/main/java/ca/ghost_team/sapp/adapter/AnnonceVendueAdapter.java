@@ -25,6 +25,7 @@ import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.model.Annonce;
 import ca.ghost_team.sapp.model.AnnonceFavoris;
 import ca.ghost_team.sapp.repository.AnnonceRepo;
+import ca.ghost_team.sapp.repository.MessageRepo;
 import ca.ghost_team.sapp.service.API.AnnonceAPI;
 import ca.ghost_team.sapp.service.SappAPI;
 import retrofit2.Call;
@@ -72,6 +73,7 @@ public class AnnonceVendueAdapter extends RecyclerView.Adapter<AnnonceVendueAdap
             Annonce uneAnnonce = listeAnnonceVendue.get(position);
             listeAnnonceVendue.remove(uneAnnonce);
             Log.i(TAG,"Annonce " + uneAnnonce + " supprimé");
+
 
             SappAPI.getApi().create(AnnonceAPI.class).deleteMyAnnonce(
                     annonce.getIdAnnonce(),

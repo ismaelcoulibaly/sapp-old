@@ -7,11 +7,11 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import javax.xml.transform.Result;
+
 import ca.ghost_team.sapp.BaseApplication;
-import ca.ghost_team.sapp.dao.AnnonceDao;
 import ca.ghost_team.sapp.dao.MessageDao;
 import ca.ghost_team.sapp.database.SappDatabase;
-import ca.ghost_team.sapp.model.Annonce;
 import ca.ghost_team.sapp.model.Message;
 
 public class MessageRepo {
@@ -44,6 +44,10 @@ public class MessageRepo {
         return allMessagesReceiver;
     }
 
+    public void deleteAllMessage() {
+        new DeleteMessageAsyncTask (dao).execute();
+    }
+
     public void sendMessage(Message message){
         new SendMessageAsyncTask(dao).execute(message);
     }
@@ -64,6 +68,23 @@ public class MessageRepo {
         protected Void doInBackground(Message... message) {
             //for(Message msg : message)
             unMessageDao.sendMessage(message[0]);
+            return null;
+        }
+
+    }
+    private static class DeleteMessageAsyncTask extends  AsyncTask<Void ,Void,Void>{
+
+        private final MessageDao unMessageDao;
+
+        public DeleteMessageAsyncTask(MessageDao unMessageDao) {
+            this.unMessageDao = unMessageDao;
+        }
+
+
+        @Override
+        protected Void  doInBackground(Void... Void) {
+            unMessageDao.deleteAllAMessage();
+
             return null;
         }
 

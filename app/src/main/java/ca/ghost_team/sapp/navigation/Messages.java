@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import ca.ghost_team.sapp.MainActivity;
 import ca.ghost_team.sapp.R;
 import ca.ghost_team.sapp.Utils.Utilitaire;
 import ca.ghost_team.sapp.adapter.ListMessageAdapter;
+import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.databinding.LayoutMessageBinding;
 import ca.ghost_team.sapp.model.Annonce;
 import ca.ghost_team.sapp.model.Message;
@@ -83,6 +85,13 @@ public class Messages extends Fragment {
         });
 
         swipeRefreshLayoutMessage.setOnRefreshListener(() -> {
+
+
+            // Supression  message dans rom
+            SappDatabase db = Room.databaseBuilder(activity.getApplication(), SappDatabase.class, BaseApplication.NAME_DB)
+                    .allowMainThreadQueries().build();
+            db.messageDao().deleteAllAMessage();
+
             SappAPI.getApi().create(MessageAPI.class).getAllMessagesViaAPI(BaseApplication.ID_USER_CURRENT).enqueue(new Callback<List<Message>>() {
                 @Override
                 public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
@@ -96,6 +105,10 @@ public class Messages extends Fragment {
                     Log.i(TAG, "newAnnonce : " + newMessage);
                     Message[] tablMessage = new Message[newMessage.size()];
                     newMessage.toArray(tablMessage);
+
+
+
+
 
                     for (Message msd : tablMessage)
                         new MessageRepo(activity.getApplication()).sendMessage(msd);
