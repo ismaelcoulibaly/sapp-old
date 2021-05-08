@@ -1,8 +1,5 @@
 # Application SAPP
 
-* Langage : Java
-* Dependances : Gradle
-* VersionSDK : 9.0 (lollipop)
-* Architecture MVVM
 
-# Livrable 2 sur la Branche "Livrable_2"
+
+# Livrable 3 sur la Branche "Production_Finale"
