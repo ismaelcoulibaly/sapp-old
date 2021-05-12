@@ -11,7 +11,7 @@ import ca.ghost_team.sapp.model.CategorieAnnonce;
 @Dao
 public interface CategorieAnnonceDao {
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertCategorie(CategorieAnnonce... categorieAnnonce);
 
     @Delete
