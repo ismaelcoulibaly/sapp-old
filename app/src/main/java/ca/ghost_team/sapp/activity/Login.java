@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
@@ -111,16 +112,27 @@ public class Login extends AppCompatActivity {
 
                         Log.i(TAG, "response : " + response);
                         String messageServer = response.body();
-
                         // Decoder les message venu du Server
                         assert messageServer != null;
                         String messageClean = Utilitaire.decode(messageServer, 5);
+                        Log.i(TAG,"messageClean : " + messageClean);
 
                         // Extraire les informations venus du Server
                         String[] table = messageClean.split("/");
                         int utilisateurIdFromServer = Integer.parseInt(table[0]);
                         String utilisateurNomFromServer = table[1];
                         String utilisateurEmailFromServer = table[2];
+
+                        if(utilisateurIdFromServer == 0 && utilisateurNomFromServer.equalsIgnoreCase("null") &&
+                                utilisateurEmailFromServer.equalsIgnoreCase("null")){
+                            Toast.makeText(Login.this, "Username or Password wrong", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if(messageClean.equalsIgnoreCase("Timeout")){
+                            Toast.makeText(Login.this, "Timeout", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
                         String content = "";
                         content += "idUtilisateur : " + utilisateurIdFromServer + "\n";
@@ -162,7 +174,8 @@ public class Login extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
                         // Si erreur 404
-                        Log.e(TAG, t.getMessage());
+                        Log.e(TAG,"Call : " + call);
+                        Log.e(TAG, "t.getmessage() : " + t.getMessage());
                     }
                 });
 

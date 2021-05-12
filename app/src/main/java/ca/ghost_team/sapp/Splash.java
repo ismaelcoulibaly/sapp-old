@@ -65,16 +65,7 @@ public class Splash extends AppCompatActivity {
                         .allowMainThreadQueries().build();
                 db.annonceDao().start();
 
-                CategorieAnnonce[] categories = {
-                        new CategorieAnnonce(1, "Pantalon"),
-                        new CategorieAnnonce(2, "T-Shirt"),
-                        new CategorieAnnonce(3, "Hoodie"),
-                        new CategorieAnnonce(4, "Short"),
-                        new CategorieAnnonce(5, "Casquette"),
-                        new CategorieAnnonce(6, "Autres")
-                };
 
-                db.categorieAnnonceDao().insertCategorie(categories);
 
                 // Recupere les informations sauvergardées avec les Preferences
                 String username = pref.getString("username","");

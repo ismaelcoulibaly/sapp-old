@@ -22,6 +22,7 @@ import ca.ghost_team.sapp.activity.MessageActivity;
 import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.databinding.ActivityMainBinding;
 import ca.ghost_team.sapp.model.Annonce;
+import ca.ghost_team.sapp.model.CategorieAnnonce;
 import ca.ghost_team.sapp.navigation.AddPost;
 import ca.ghost_team.sapp.navigation.Favoris;
 import ca.ghost_team.sapp.navigation.Home;
@@ -50,6 +51,17 @@ public class MainActivity extends AppCompatActivity{
         SappDatabase db = Room.databaseBuilder(getApplication(), SappDatabase.class, BaseApplication.NAME_DB)
                 .allowMainThreadQueries().build();
         db.annonceDao().start();
+
+        CategorieAnnonce[] categories = {
+                new CategorieAnnonce(1, getResources().getString(R.string.pants)),
+                new CategorieAnnonce(2, getResources().getString(R.string.Tshirt)),
+                new CategorieAnnonce(3, getString(R.string.Hoodie)),
+                new CategorieAnnonce(4, getString(R.string.Short)),
+                new CategorieAnnonce(5, getString(R.string.Cap)),
+                new CategorieAnnonce(6, getString(R.string.Other))
+        };
+
+        db.categorieAnnonceDao().insertCategorie(categories);
 
         // add menu item
         navBar.add(new MeowBottomNavigation.Model(1,R.drawable.ic_home));
