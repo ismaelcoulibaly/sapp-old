@@ -52,6 +52,11 @@
     <string name="offerDelete">Annnonce Supprimée des Favoris</string>
     <string name="title_activity_maps">Carte</string>
     <string name="market">Marché</string>
+    <string name="suprimer_Anonces_Question">Etes-vous sure de suprimer l\'anonnce</string>
+    <string name="yes">Oui</string>
+    <string name="efacerAnnonce">Annonces effacer</string>
+    <string name="no">Non</string>
+    <string name="titre_Supprimer_Annonce">Suprimer anonnce </string>
 
 
 </resources>

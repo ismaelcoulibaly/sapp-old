@@ -1,6 +1,11 @@
 package ca.ghost_team.sapp.adapter;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Notification;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +26,7 @@ import java.util.List;
 
 import ca.ghost_team.sapp.BaseApplication;
 import ca.ghost_team.sapp.R;
+import ca.ghost_team.sapp.activity.AnnonceVendue;
 import ca.ghost_team.sapp.database.SappDatabase;
 import ca.ghost_team.sapp.model.Annonce;
 import ca.ghost_team.sapp.model.AnnonceFavoris;
@@ -70,39 +76,57 @@ public class AnnonceVendueAdapter extends RecyclerView.Adapter<AnnonceVendueAdap
 
         // Trash
         holder.annonceTrash.setOnClickListener((v)->{
-            Annonce uneAnnonce = listeAnnonceVendue.get(position);
-            listeAnnonceVendue.remove(uneAnnonce);
-            Log.i(TAG,"Annonce " + uneAnnonce + " supprimé");
 
 
-            SappAPI.getApi().create(AnnonceAPI.class).deleteMyAnnonce(
-                    annonce.getIdAnnonce(),
-                    annonce.getUtilisateurId(),
-                    annonce.getAnnonceTitre(),
-                    annonce.getAnnoncePrix()).enqueue(new Callback<Annonce>() {
-                @Override
-                public void onResponse(Call<Annonce> call, Response<Annonce> response) {
-                    // Si conncetion Failed
-                    if (!response.isSuccessful()) {
-                        Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
-                        return;
-                    }
+           AlertDialog x =new  AlertDialog.Builder(context).setIcon(android.R.drawable.ic_dialog_alert)
+                         .setTitle(R.string.titre_Supprimer_Annonce)
+                   .setMessage(context.getResources().getString(R.string.suprimer_Anonces_Question))
+                   .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //finish();
+                            ajjouter(position,annonce);
+                        Toast.makeText(context, R.string.efacerAnnonce,Toast.LENGTH_SHORT).show();
+                        }
+                    }).setNegativeButton(R.string.no, null).show();
 
-                    Log.i(TAG, "response : " + response);
-                    Annonce reponse = response.body();
-                    // Envoyer une Requête pour supprimer l'Annonce
-                    db.annonceDao().deleteAnnonce(reponse.getIdAnnonce());
+
+    });    }
+
+    public void ajjouter (int position,Annonce annonce){  //  void ajouterx (){
+        Annonce uneAnnonce = listeAnnonceVendue.get(position);
+        listeAnnonceVendue.remove(uneAnnonce);
+        Log.i(TAG,"Annonce " + uneAnnonce + " supprimé");
+
+
+        SappAPI.getApi().create(AnnonceAPI.class).deleteMyAnnonce(
+                annonce.getIdAnnonce(),
+                annonce.getUtilisateurId(),
+                annonce.getAnnonceTitre(),
+                annonce.getAnnoncePrix()).enqueue(new Callback<Annonce>() {
+            @Override
+            public void onResponse(Call<Annonce> call, Response<Annonce> response) {
+                // Si conncetion Failed
+                if (!response.isSuccessful()) {
+                    Log.i(TAG, "Connection Failed \nFailedCode : " + response.code());
+                    return;
                 }
 
-                @Override
-                public void onFailure(Call<Annonce> call, Throwable t) {
-                    // Si erreur 404
-                    Log.e(TAG, t.getMessage());
-                }
-            });
-            notifyDataSetChanged();
+                Log.i(TAG, "response : " + response);
+                Annonce reponse = response.body();
+                // Envoyer une Requête pour supprimer l'Annonce
+                db.annonceDao().deleteAnnonce(reponse.getIdAnnonce());
+            }
+
+            @Override
+            public void onFailure(Call<Annonce> call, Throwable t) {
+                // Si erreur 404
+                Log.e(TAG, t.getMessage());
+            }
         });
+        notifyDataSetChanged();
     }
+
 
 
 
