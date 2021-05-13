@@ -51,6 +51,11 @@
     <string name="offerDelete">offer removed from Favorites</string>
     <string name="title_activity_maps">Map</string>
     <string name="market">MarketPlace</string>
+    <string name="suprimer_Anonces_Question">Are you sure you want to delete offer </string>
+    <string name="yes">Yes</string>
+    <string name="efacerAnnonce">Offer deleted</string>
+    <string name="no">No</string>
+    <string name="titre_Supprimer_Annonce">Delete offer</string>
 
 
 </resources>
